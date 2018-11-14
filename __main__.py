@@ -76,11 +76,13 @@ def pTEXT():
 	<title>OO</title>
 </head>
     """
+    result
     for x in rows:
         for y in x:
+	    print type(result)
             result+=str(y).encode('utf-8')
     curs.close()
-    return result.encode('utf-8')
+    return result
 
 @app.route('/')
 def hello():
