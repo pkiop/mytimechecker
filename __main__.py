@@ -1,9 +1,11 @@
-from flask import Flask
+from flask import Flask, render_template
+from flask_bootstrap import Bootstrap
 import json
 import pymysql 
 import codecs
 
 app = Flask(__name__)
+Bootstrap(app)
 
 # Make the WSGI interface available at the top level so wfastcgi can get it.
 wsgi_app = app.wsgi_app
@@ -80,8 +82,13 @@ def pTEXT():
     return result
 
 @app.route('/')
-def hello():
-    return "Hello World!"
+def main():
+    return render_template('index.html') 
+
+@app.route('/bootstrap')
+def bootstrap():
+    return render_template('bootstrap.html') 
+
 
 @app.route('/DB')
 def db_access():
