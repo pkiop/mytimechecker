@@ -50,7 +50,7 @@ front = """
 	<meta name="author" content="">
 	<link rel="icon" href="http://bootstrapk.com/favicon.ico">
 
-	<title>PSS</title>
+	<title>비이츠랩의  비밀공간</title>
 
 	<!-- Bootstrap core CSS -->
 	<link href="/static/css/bootstrap.min.css" rel="stylesheet">
@@ -71,14 +71,12 @@ front = """
 					<span class="icon-bar"></span>
 				</button>
 				<a class="navbar-brand"
-					href="http://164.125.63.208:5555">time checker</a>
+					href="http://164.125.63.208:5555">비이츠랩의 비밀공간</a>
 			</div>
 			<div id="navbar" class="collapse navbar-collapse">
 				<ul class="nav navbar-nav">
 					<li class="active"><a href="http://164.125.63.208:5555/">main</a></li>
-					<li><a href="http://164.125.63.208:5555/DBget">time record</a></li>
-					<li><a href="http://164.125.63.208:5555/bootstrap">empty</a></li>
-					<li><a href="http://www.pusan.ac.kr/kor/CMS/MenuMgr/menuListOnBuilding.do?">식단</a></li>
+					<li><a href="http://164.125.63.208:5555/meal">식단</a></li>
 					<li><a href="https://bitelab.pusan.ac.kr/ccslab/index.do">Bitelab</a></li>
 				</ul>
 			</div>
@@ -184,7 +182,22 @@ def meal():
     soup = BeautifulSoup(init(url), 'html.parser')
     main2 = soup.select_one('#cont > div.menu-wr > div.wauto-wrap > div.is-wauto-box > table.menu-tbl')
     soup_string = str(main2)
+
+    soup_string = soup_string.replace('menu-tbl type-day','table table-striped')		
+    soup_string = soup_string.replace('<h3 class="menu-tit01">정식-4,000원</h3>', '')
+    soup_string = soup_string.replace('<span class="blind">캠퍼스별 식단메뉴에 대한 안내제공</span>','')
+    soup_string = soup_string.replace('h3','p')
+    soup_string = soup_string.replace('조식','')
+    result += """
+		<div class="container">
+			<div class="starter-template">
+	"""
     result += soup_string
+    result += """
+			</div>
+        </div>
+
+	"""
     result += back
     return result
 
