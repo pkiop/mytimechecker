@@ -105,6 +105,8 @@ def DBget():
 
     result+="</tbody>"
     result+="</table>"
+
+	result += back
     curs.close()
     conn.close()
     return result
