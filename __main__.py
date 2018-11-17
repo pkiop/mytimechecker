@@ -1,3 +1,5 @@
+# -*- coding: utf-8 -*-
+
 from flask import Flask, render_template
 from flask_bootstrap import Bootstrap
 import json
@@ -24,7 +26,7 @@ front = """
 	<meta name="author" content="">
 	<link rel="icon" href="http://bootstrapk.com/favicon.ico">
 
-	<title>BiteLab</title>
+	<title>PSS</title>
 
 	<!-- Bootstrap core CSS -->
 	<link href="/static/css/bootstrap.min.css" rel="stylesheet">
@@ -45,13 +47,15 @@ front = """
 					<span class="icon-bar"></span>
 				</button>
 				<a class="navbar-brand"
-					href="https://naver.com">time checker</a>
+					href="http://164.125.63.208:5555">time checker</a>
 			</div>
 			<div id="navbar" class="collapse navbar-collapse">
 				<ul class="nav navbar-nav">
 					<li class="active"><a href="http://164.125.63.208:5555/">main</a></li>
 					<li><a href="http://164.125.63.208:5555/DBget">time record</a></li>
 					<li><a href="http://164.125.63.208:5555/bootstrap">empty</a></li>
+					<li><a href="http://www.pusan.ac.kr/kor/CMS/MenuMgr/menuListOnBuilding.do?">식단</a></li>
+					<li><a href="https://bitelab.pusan.ac.kr/ccslab/index.do">Bitelab</a></li>
 				</ul>
 			</div>
 			<!--/.nav-collapse -->
@@ -61,9 +65,6 @@ front = """
 """
 
 back = """
-	<!-- Bootstrap core JavaScript
-																																																																								      ================================================== -->
-	<!-- Placed at the end of the document so the pages load faster -->
 	<script src="/static/js/jquery.min.js"></script>
 	<script src="/static/js/bootstrap.min.js"></script>
 
@@ -71,6 +72,7 @@ back = """
 
 </html>
 """
+
 @app.route('/DBget')
 def DBget():
     conn = pymysql.connect(host='192.168.1.183', user='root', password='aaaa', db='pkiop_planner', charset='utf8')
@@ -79,7 +81,8 @@ def DBget():
     rows = curs.fetchall()
     result = front
     result += """
-        <table>
+	  <div class="container">
+        <table class="table table-bordered">
          <thead>
             <tr>
             <th>ID</th>
@@ -94,6 +97,7 @@ def DBget():
             </tr>
          </thead>
          <tbody>
+	  </div>
     """
     for x in rows:
         result += "<tr>"
@@ -105,8 +109,7 @@ def DBget():
 
     result+="</tbody>"
     result+="</table>"
-
-	result += back
+    result+=back
     curs.close()
     conn.close()
     return result
@@ -134,12 +137,21 @@ def pTEXT():
 
 @app.route('/')
 def main():
-    return render_template('index.html') 
+	result = front
+	result += """
+		<div class="container">
+			<div class="starter-template">
+				<h1>PSS</h1>
+				<p class="lead">설명하는 곳 <br> HTML CSS JS BOOTSTRAP </b>
+			</div>
+		</div>
+	"""
+	result += back
+	return result
 
 @app.route('/bootstrap')
 def bootstrap():
     return render_template('bootstrap.html') 
-
 
 @app.route('/DB')
 def db_access():
