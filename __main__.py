@@ -162,9 +162,12 @@ def main():
 	result = front
 	result += """
 		<div class="container">
+			<img width="300px" height="300px" src="https://raw.githubusercontent.com/pkiop/mytimechecker/master/image/godfather.jpg" class="img-responsive center-block img-circle"/>
+		</div>
+		<div class="container">
 			<div class="starter-template">
-				<h1>PSS</h1>
-				<p class="lead">설명하는 곳 <br> HTML CSS JS BOOTSTRAP </b>
+				<h1>비이츠랩</h1>
+				<p class="lead"><br> </b>
 			</div>
 		</div>
 	"""
@@ -184,6 +187,7 @@ def meal():
     soup_string = str(main2)
 
     soup_string = soup_string.replace('menu-tbl type-day','table table-striped')		
+    soup_string = soup_string.replace('<td>', '<td class="col-md-15">')
     soup_string = soup_string.replace('<h3 class="menu-tit01">정식-4,000원</h3>', '')
     soup_string = soup_string.replace('<span class="blind">캠퍼스별 식단메뉴에 대한 안내제공</span>','')
     soup_string = soup_string.replace('h3','p')
