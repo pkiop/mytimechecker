@@ -493,11 +493,9 @@ int main()
 			whatweek = whatweekday / 7 + 2;
 		}
 
-		system("pause");
 	}
 	else {
 		cerr << "아직 19년도만" << endl;
-		system("pause");
 		return -1;
 	}
 
@@ -558,8 +556,8 @@ int main()
 		system("pause");
 		return 1;
 	}
-	cout << " do << " << endl;
-	string query_string = "INSERT INTO result VALUES('" + filename_out + "' , " + (go.ret_todaypercent()) + ", '" + go.ret_sleeptime() + "', '" + today_exercise + "' , " + to_string(whatweek) + ",'" + yoil_st + "')";
+
+	string query_string = "INSERT INTO result3 VALUES('" + filename_out + "' , " + (go.ret_todaypercent()) + ", '" + go.ret_sleeptime() + "', '" + today_exercise + "' , " + to_string(whatweek) + ",'" + yoil_st + "')";
 	char* query = new char[query_string.length()];
 	for (int i = 0; i < query_string.length(); ++i) {
 		query[i] = query_string[i];
