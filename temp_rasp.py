@@ -113,7 +113,7 @@ active_header = """
 					<li><a href="http://""" + localhost + """/">main</a></li>
 					<li><a href="http://""" + localhost + """/meal">식단</a></li>
                     <li><a href="http://""" + localhost + """/goodwrite">좋은 글</a></li>
-                    <li><a herf="gttp://""" + localhost + """/gestbook">방명록</a></li>
+                    <li><a href="http://""" + localhost + """/guestbook">방명록</a></li>
 					<li><a href="https://bitelab.pusan.ac.kr/ccslab/index.do">Bitelab</a></li>
 				</ul>
 			</div>
@@ -349,26 +349,23 @@ def meal():
     result += back
     return result
 
-@app.route('/gestbook', methods=['POST','GET'])
-def gestbook():
+@app.route('/guestbook', methods=['POST','GET'])
+def guestbook():
 #    conn = pymysql.connect(host='192.168.1.183', user='root', password='1111', db='bitelab', charset='utf8')
 #    curs = conn.cursor()
-#    curs.execute("select * from gestbook")
+#    curs.execute("select * from guestbook")
 #    rows = curs.fetchall()
     conn = pymysql.connect(host=dbhost , user='bitelab_cl', password='1111', db='bitelab', charset='utf8')
     curs = conn.cursor()
     if request.method == 'POST':
         writer = request.form['writer']
         contents = request.form['contents']
-        print(writer)
-        print(type(writer))
-        print(contents)
-        print(type(contents))
         
-        query = "INSERT INTO gestbook (name, text) VALUES ('" + writer + "', '" + contents + "')"
+        query = "INSERT INTO guestbook (name, text) VALUES ('" + writer + "', '" + contents + "')"
         returnvalue= curs.execute(query)
+        conn.commit()
     result = front
-    result += active_header.replace('<li><a href="http://' + localhost + '/gestbook">방명록</a></li>','<li class="active"><a href="http://' + localhost + '/gestbook">방명록</a></li>')
+    result += active_header.replace('<li><a href="http://' + localhost + '/guestbook">방명록</a></li>','<li class="active"><a href="http://' + localhost + '/guestbook">방명록</a></li>')
     result += """
     <style>
        
@@ -383,7 +380,7 @@ def gestbook():
     <thead>
     </thead>
     <tbody>
-        <form action="http://""" + localhost + """/gestbook" accept-charset="utf-8" method="post">
+        <form action="http://""" + localhost + """/guestbook" accept-charset="utf-8" method="post">
             <tr>
                 <th>작성자: </th>
                 <td><input type="text" placeholder="작성자을 입력하세요. " name="writer" class="form-control" /></td>
@@ -412,7 +409,7 @@ def gestbook():
 </thead>
 <tbody>
 """
-    curs.execute("select * from gestbook")
+    curs.execute("select * from guestbook")
     dbstring = curs.fetchall()
     for x in dbstring:
         result += "<tr>"
@@ -430,7 +427,6 @@ def gestbook():
 
     result+=back
     curs.close()
-
     conn.close()
     return result
 
