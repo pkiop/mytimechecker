@@ -1,6 +1,7 @@
 // myplaner.cpp : This file contains the 'main' function. Program execution begins and ends there.
 //
 
+#include "pch.h"
 #include <iostream>
 #include <fstream>
 #include <string>
@@ -167,21 +168,31 @@ public:
 					if (z == col + 1) {
 						graph_table[row][z] = '[';
 					}
-					else if(cnt == 1){}
-					graph_table[row][z] = '@';
+					else if(cnt == 0){
+						graph_table[row][z] = ']';
+					}
+					else {
+						graph_table[row][z] = '@';
+					}
 				}
 				else {
-					graph_table[row][z] = '_';
+					graph_table[row][z] = '-';
 				}
 			}
 			if (cnt != 0) {
 				cnt++;
 				for (int z = 1; z <= cnt; ++z) {
+
 					if (OorB) {
-						graph_table[row+1][z] = '@';
+						if (z == cnt) {
+							graph_table[row + 1][z-1] = ']';
+						}
+						else {
+							graph_table[row + 1][z] = '@';
+						}
 					}
 					else {
-						graph_table[row+1][z] = '_';
+						graph_table[row + 1][z] = '_';
 					}
 				}
 			}
@@ -266,6 +277,71 @@ public:
 		}
 	}
 	//디버그 부분 끝
+
+	void print_data() {
+		cout << "----------프린트----------	" << endl;
+		cout << "lab_h : " << lab_h << '\t' << "lab_m : " << lab_m << endl;
+		cout << "st_h : " << st_h << '\t' << "st_m : " << st_m << endl;
+		cout << "morning : " << morning_exercise << endl;
+
+		/*for (auto x : record) {
+			cout << x.first.first << ' ' << x.first.second << ' ' << x.second.first << ' ' << x.second.second << endl;
+		}*/
+
+		for (int i = 0; i < 4; ++i) {
+			if (i == 0) {
+				cout << "--- 총 시간(O_time[0]) --- " << endl;
+			}
+			else {
+				cout << "--- 각 시간(O_time[" << i << "] ---" << endl;
+			}
+			cout << "O : " << O_time[i] << "\tB : " << B_time[i] << "\tX : " << X_time[i] << endl;
+		}
+
+		cout << "--- O ---" << endl;
+		for (auto x : contents_time) {
+			if (x.second.second == 'B') continue;
+			cout << x.first << ' ' << x.second.first << endl;
+		}
+
+		cout << "--- B --- " << endl;
+		for (auto x : contents_time) {
+			if (x.second.second == 'O') continue;
+			cout << x.first << ' ' << x.second.first << endl;
+		}
+
+		int hour = 7;
+		for (int i = 0; i < 13; ++i) {
+			if (hour < 10 && hour != 7) {
+				cout << '0';
+			}
+			if (hour == 12) {
+				hour++;
+			}
+			if (hour == 17) {
+				hour += 2;
+			}
+			if (hour == 7) {
+				cout << "  ";
+				hour++;
+			}
+			else {
+				cout << hour++;
+			}
+			for (int j = 1; j < 61; ++j) {
+				if ((j - 1) % 10 == 0) {
+					cout << '|';
+				}
+				cout << graph_table[i][j];
+			}
+			cout << endl;
+		}
+
+		cout << "오늘의 퍼센트" << endl;
+		for (int i = 0; i < 4; ++i) {
+			cout << i << " : " << todaypercent[i] << "%\n";
+		}
+	}
 };
 
 
@@ -295,7 +371,6 @@ int main()
 				go.time_classification(time_index, line);
 			}
 
-			cout << line << endl;
 			for_first_line_cnt++; // first_line 위한 cnt
 		}
 		openFile.close();
@@ -304,7 +379,8 @@ int main()
 	go.contents_time_cal();
 	go.table_cal();
 	go.todaypercent_cal();
-	go.debug_print();
+	//go.debug_print();
+	go.print_data();
 
 	return 0;
 }
