@@ -7,6 +7,10 @@
 #include <string>
 #include <vector>
 #include <map>
+#include <set> // ìë£Œ ì •ë ¬í•˜ê¸° ìœ„í•¨
+#include <algorithm> // Oë‘ B ì •ë ¬í•˜ê¸° ìœ„í•¨
+#include <direct.h> //í´ë” ë§Œë“¤ê¸° ìœ„í•¨
+#include <windows.h> // í´ë” ë§Œë“¤ê¸° ìœ„í•¨
 
 using namespace std;
 
@@ -18,18 +22,18 @@ class mytime {
 	enum for_firstline {
 		lab_arrive, start_time, M_exercise
 	};
-	//°øºÎ ÇÑ °Íµé ¸®½ºÆ®
+	//ê³µë¶€ í•œ ê²ƒë“¤ ë¦¬ìŠ¤íŠ¸
 	vector < pair<pair<int, char>, pair<int, string>>> record; // index, color, time, contents
-	vector < pair<pair<int, int>, pair<int,char>>> for_table_data; // ½ÃÀÛ½Ã°£ÀÇ h,m °ú µÚÀÇ ½Ã°£ 
+	vector < pair<pair<int, int>, pair<int,char>>> for_table_data; // ì‹œì‘ì‹œê°„ì˜ h,m ê³¼ ë’¤ì˜ ì‹œê°„ 
 
 	//results
-	int O_time[4], B_time[4], X_time[4]; // Orange, Blue, Xtime (X timeÀº lab¿¡ ¾ø¾ú°Å³ª) 0 : ÃÑ½Ã°£ 1 : ¿ÀÀü 2 : ¿ÀÈÄ 3 : Àú³á
+	int O_time[4], B_time[4], X_time[4]; // Orange, Blue, Xtime (X timeì€ labì— ì—†ì—ˆê±°ë‚˜) 0 : ì´ì‹œê°„ 1 : ì˜¤ì „ 2 : ì˜¤í›„ 3 : ì €ë…
 	int todaypercent[4];
-	map<string, pair<int,char> > contents_time; // key·Î ÇÑ ÀÏ Àû°í °ªÀ¸·Î ½Ã°£°ú ±×°ÍÀÇ color
+	map<string, pair<int,char> > contents_time; // keyë¡œ í•œ ì¼ ì ê³  ê°’ìœ¼ë¡œ ì‹œê°„ê³¼ ê·¸ê²ƒì˜ color
 	char graph_table[13][61];
 
 public:
-	// µ¥ÀÌÅÍ ÀÔ·Â ºÎºĞ 
+	// ë°ì´í„° ì…ë ¥ ë¶€ë¶„ 
 	void lab_arrive_func(int h, int m) {
 		lab_h = h;
 		lab_m = m;
@@ -48,19 +52,19 @@ public:
 	void push_record(int index, char color, int time, string& contents) {
 		record.push_back({ {index,color},{time,contents} });
 	}
-	//µ¥ÀÌÅÍ ÀÔ·ÂºÎºĞ ³¡
+	//ë°ì´í„° ì…ë ¥ë¶€ë¶„ ë
 
 
 
-	//text ÀÔ·Â¹ŞÀº µ¥ÀÌÅÍ Ã³¸®ºÎºĞ
-	void first_line_check(string &s, int cnt) { // ·¦½ÇµµÂø, ½ÃÀÛ½Ã°£, ¾ÆÄ§¿îµ¿ Ã¼Å©¿ë
+	//text ì…ë ¥ë°›ì€ ë°ì´í„° ì²˜ë¦¬ë¶€ë¶„
+	void first_line_check(string &s, int cnt) { // ë©ì‹¤ë„ì°©, ì‹œì‘ì‹œê°„, ì•„ì¹¨ìš´ë™ ì²´í¬ìš©
 		switch (cnt) {
 		case lab_arrive:
-			//12ºÎÅÍ ½ÃÀÛÇÏ´Â ÀÌÀ¯. ÇÑ±ÛÀ» char·Î ¹Ù²Ù¸é ?°¡ µÇ´Âµ¥ ÇÑ±Û ÇÑ±ÛÀÚ´ç ?? ·Î µÇ¾î¼­ 2Ä­¾¿ Â÷ÁöÇÏ´Â °É·Î °è»ê 
-			mytime::lab_arrive_func(int(s[12] - '0'), int(s[14] - '0') * 10 + int(s[15] - '0')); // ¾ÕºÎºĞ »©°í ½Ã°£¸¸ ¹Ù²ã¼­ ³Ö±â
+			//12ë¶€í„° ì‹œì‘í•˜ëŠ” ì´ìœ . í•œê¸€ì„ charë¡œ ë°”ê¾¸ë©´ ?ê°€ ë˜ëŠ”ë° í•œê¸€ í•œê¸€ìë‹¹ ?? ë¡œ ë˜ì–´ì„œ 2ì¹¸ì”© ì°¨ì§€í•˜ëŠ” ê±¸ë¡œ ê³„ì‚° 
+			mytime::lab_arrive_func(int(s[12] - '0'), int(s[14] - '0') * 10 + int(s[15] - '0')); // ì•ë¶€ë¶„ ë¹¼ê³  ì‹œê°„ë§Œ ë°”ê¿”ì„œ ë„£ê¸°
 			break;
 		case start_time:
-			mytime::start_time_func(int(s[12] - '0'), int(s[14] - '0') * 10 + int(s[15] - '0')); // ¾ÕºÎºĞ »©°í ½Ã°£¸¸ ¹Ù²ã¼­ ³Ö±â
+			mytime::start_time_func(int(s[12] - '0'), int(s[14] - '0') * 10 + int(s[15] - '0')); // ì•ë¶€ë¶„ ë¹¼ê³  ì‹œê°„ë§Œ ë°”ê¿”ì„œ ë„£ê¸°
 		case M_exercise:
 			vector<char> input;
 			for (int i = 12; i < s.size(); ++i) {
@@ -86,12 +90,53 @@ public:
 		push_m = finish_m - start_m + 60 * h;
 
 		push_record(index, s[0], push_m, contents);
-		for_table_data.push_back({ {start_h, start_m}, {push_m,s[0]} });
+		for_table_data.push_back({ {start_h, start_m}, {push_m, s[0]} }); 
 	}
-	//text ÀÔ·Â¹ŞÀº µ¥ÀÌÅÍ Ã³¸®ºÎºĞ ³¡
+	//ì¼ë‹¨ ì‹œê°„ë§Œ ì…ë ¥ë°›ê³  ë§ˆì§€ë§‰ ë¬¸ìëŠ” recode_sort_and_alphabet_chanceì—ì„œ record ì •ë ¬ëœ ë‹¤ìŒ for_data_table_cal ëŒë¦¬ë©´ 
+	//ì‹œê°„ ë§ì´ ì“´ ìˆœì„œëŒ€ë¡œ A~Z, a~zë¡œ ì •ë ¬ë˜ì–´ ì¶œë ¥ëœë‹¤.
+
+	void recode_sort_and_alphabet_change() { //ì…ë ¥ë°›ì€ ê²ƒì— ë”°ë¼ ë¶„ì´ ê°€ì¥ ë†’ì€ ìˆœì„œëŒ€ë¡œ ABCD, abcdë¡œ ë¶„ë¥˜í•  ê²ƒ 
+		vector<pair<int, string>> for_O, for_B;
+		for (auto x : contents_time) {
+			if (x.second.second >= 'a') {
+				for_B.push_back({ x.second.first,x.first });
+			}
+			else {
+				for_O.push_back({ x.second.first,x.first });
+			}
+		}
+		sort(for_O.begin(), for_O.end(), greater<pair<int, string>>()); //í™œìš©í•œ ì‹œê°„, í™œìš©ëª»í•œì‹œê°„ sort
+		sort(for_B.begin(), for_B.end(), greater<pair<int, string>>());
+
+		char Alpha = 'A';
+		for (auto x : for_O) {
+			for (int i = 0; i < record.size();++i) { //ì—¬ê¸° autoë¡œ í•´ë²„ë¦¬ë©´ ê°’ ì•ˆë°”ë€ë‹¤. 
+				if (record[i].second.second == x.second) {
+					record[i].first.second = Alpha;
+				}
+			}
+			Alpha++;
+		}
+		Alpha = 'a';
+		for (auto x : for_B) {
+			for (int i = 0;i<record.size();++i) {
+				if (record[i].second.second == x.second) {
+					record[i].first.second = Alpha;
+				}
+			}
+			Alpha++;
+		}
+	}
+
+	void for_table_data_cal() {
+		for (int i = 0; i < record.size(); ++i) {
+			for_table_data[i].second.second = record[i].first.second;
+		}
+	}
+	//text ì…ë ¥ë°›ì€ ë°ì´í„° ì²˜ë¦¬ë¶€ë¶„ ë
 	
 
-	//µ¥ÀÌÅÍ Ã³¸®Çß´ø µ¥ÀÌÅÍ·Î °è»êÇÏ°í Åë°è³»´Â ºÎºĞ
+	//ë°ì´í„° ì²˜ë¦¬í–ˆë˜ ë°ì´í„°ë¡œ ê³„ì‚°í•˜ê³  í†µê³„ë‚´ëŠ” ë¶€ë¶„
 	void color_time_cal() {
 		for (int i = 0; i < 4; ++i) {
 			O_time[i] = 0;
@@ -100,10 +145,10 @@ public:
 		}
 
 		for (auto x : record) {
-			if (x.first.second == 'O') {
+			if (x.first.second < 'a') {
 				O_time[x.first.first] += x.second.first;
 			}
-			if (x.first.second == 'B') {
+			else {
 				B_time[x.first.first] += x.second.first;
 			}
 		}
@@ -113,7 +158,7 @@ public:
 			B_time[0] += B_time[i];
 		}
 
-		X_time[0] = 60 * 12 - O_time[0] - B_time[0]; // XÃÑ Å¸ÀÓÀº 12½Ã°£ * 60¿¡ O¶û B »«°Í
+		X_time[0] = 60 * 12 - O_time[0] - B_time[0]; // Xì´ íƒ€ì„ì€ 12ì‹œê°„ * 60ì— Oë‘ B ëº€ê²ƒ
 		for (int i = 1; i < 4; ++i) {
 			X_time[i] = 240 - O_time[i] - B_time[i];
 		}
@@ -122,12 +167,12 @@ public:
 	void contents_time_cal() {
 		for (auto x : record) {
 			contents_time[x.second.second].first += x.second.first;
-			contents_time[x.second.second].second = x.first.second; // O¶û B ±¸ºĞÇÏ°ÔÇØ¼­ Ãâ·ÂÇÒ ¶§ µû·Î ³ª¿À°Ô ÇÏ·Á°í 
+			contents_time[x.second.second].second = x.first.second; // Oë‘ B êµ¬ë¶„í•˜ê²Œí•´ì„œ ì¶œë ¥í•  ë•Œ ë”°ë¡œ ë‚˜ì˜¤ê²Œ í•˜ë ¤ê³  
 		}
 	}
-	//µ¥ÀÌÅÍ Ã³¸®Çß´ø µ¥ÀÌÅÍ·Î °è»êÇÏ°í Åë°è³»´Â ºÎºĞ ³¡
+	//ë°ì´í„° ì²˜ë¦¬í–ˆë˜ ë°ì´í„°ë¡œ ê³„ì‚°í•˜ê³  í†µê³„ë‚´ëŠ” ë¶€ë¶„ ë
 
-	//table Ã³¸® ºÎºĞ
+	//table ì²˜ë¦¬ ë¶€ë¶„
 	void table_cal() {
 		for (int i = 1; i < 61; ++i) {
 			graph_table[0][i] = char((i-1)%10 + '0');
@@ -137,10 +182,11 @@ public:
 			graph_table[i][0] = char(i % 10 + '0');
 		}
 
-		for (auto x : for_table_data) { // ½ÃÀÛ½Ã°£ÀÇ h¿Í m, ±× ½Ã°£
+		for (auto x : for_table_data) { // ì‹œì‘ì‹œê°„ì˜ hì™€ m, ê·¸ ì‹œê°„
 			int row = x.first.first;
 			int col = x.first.second;
 			int cnt = x.second.first;
+			char summary_char = x.second.second;
 
 			if (row <= 12) {
 				row -= 7;
@@ -153,11 +199,11 @@ public:
 			}
 
 			bool OorB;
-			if (x.second.second == 'O') {
-				OorB = true;
+			if (summary_char >= 'a' ) { //ëŒ€ë¬¸ìì´ë©´ í™œìš©ì‹œê°„ ì†Œë¬¸ìì´ë©´ í™œìš©ëª»í•œê²ƒ 
+				OorB = false;
 			}
 			else {
-				OorB = false;
+				OorB = true;
 			}
 			for (int z = col + 1; z < 61; ++z) {
 				if (cnt == 0) {
@@ -172,11 +218,11 @@ public:
 						graph_table[row][z] = ']';
 					}
 					else {
-						graph_table[row][z] = '@';
+						graph_table[row][z] = summary_char;
 					}
 				}
 				else {
-					graph_table[row][z] = '-';
+					graph_table[row][z] = summary_char;
 				}
 			}
 			if (cnt != 0) {
@@ -188,11 +234,11 @@ public:
 							graph_table[row + 1][z-1] = ']';
 						}
 						else {
-							graph_table[row + 1][z] = '@';
+							graph_table[row + 1][z] = summary_char;
 						}
 					}
 					else {
-						graph_table[row + 1][z] = '_';
+						graph_table[row + 1][z] = summary_char;
 					}
 				}
 			}
@@ -206,114 +252,25 @@ public:
 			todaypercent[i] = (O_time[i] * 100) / (240 - resttime);
 		}
 	}
+	//table ì²˜ë¦¬ ë¶€ë¶„ ë 
 
-	//table Ã³¸® ºÎºĞ ³¡ 
-
-
-
-	//µğ¹ö±× ºÎºĞ
-	void debug_print() {
-		cout << "----------µğ¹ö±×----------	" << endl;
-		cout << "lab_h : " << lab_h << '\t' << "lab_m : " << lab_m << endl;
-		cout << "st_h : " << st_h << '\t' << "st_m : " << st_m << endl;
-		cout << "morning : " << morning_exercise <<  endl;
-
-		for (auto x : record) {
-			cout << x.first.first << ' ' << x.first.second << ' ' << x.second.first << ' ' << x.second.second << endl;
-		}
-
-		for (int i = 0; i < 4; ++i) {
-			if (i == 0) {
-				cout << "--- ÃÑ ½Ã°£(O_time[0]) --- " << endl;
-			}
-			else {
-				cout << "--- °¢ ½Ã°£(O_time[" << i << "] ---" << endl;
-			}
-			cout << "O : " << O_time[i] << "\tB : " << B_time[i] << "\tX : " << X_time[i] << endl;
-		}
-
-		cout << "--- O ---" << endl;
-		for (auto x : contents_time) {
-			if (x.second.second == 'B') continue;
-			cout << x.first << ' ' << x.second.first << endl;
-		}
-
-		cout << "--- B --- " << endl;
-		for (auto x : contents_time) {
-			if (x.second.second == 'O') continue;
-			cout << x.first << ' ' << x.second.first << endl;
-		} 
-
-		int hour = 7;
-		for (int i = 0; i < 13; ++i) {
-			if (hour < 10 && hour != 7) {
-				cout << '0';
-			}
-			if (hour == 12) {
-				hour++;
-			}
-			if (hour == 17) {
-				hour += 2;
-			}
-			if (hour == 7) {
-				cout << "  ";
-				hour++;
-			}
-			else {
-				cout << hour++;
-			}
-			for (int j = 1; j < 61; ++j) {
-				if ((j-1)% 10 == 0) {
-					cout << '|';
-				}
-				cout << graph_table[i][j];
-			}
-			cout << endl;
-		}
-
-		cout << "¿À´ÃÀÇ ÆÛ¼¾Æ®" << endl;
-		for (int i = 0; i < 4; ++i) {
-			cout << i << " : " << todaypercent[i] << "%\n";
-		}
-	}
-	//µğ¹ö±× ºÎºĞ ³¡
-
-	void print_data() {
-		cout << "----------ÇÁ¸°Æ®----------	" << endl;
-		cout << "lab_h : " << lab_h << '\t' << "lab_m : " << lab_m << endl;
-		cout << "st_h : " << st_h << '\t' << "st_m : " << st_m << endl;
-		cout << "morning : " << morning_exercise << endl;
+	template<typename T>
+	void print_data(T& os, string filename) {
+		os << "\n\n    --------------------------- 20" << filename.substr(0,2) << "ë…„ " << filename.substr(2,2) << "ì›” " << filename.substr(4,2) << "ì¼" << " -------------------------" << endl;
+		/*os << "\t\t\t\të„ì°© ì‹œê°„ : " << lab_h << ':' << lab_m << endl;
+		os << "\t\t\t\tì‹œì‘ ì‹œê°„ : " << st_h << ':' << st_m << endl;
+		os << "\t\t\t\tì•„ì¹¨ ìš´ë™ : " << morning_exercise << endl;*/
 
 		/*for (auto x : record) {
-			cout << x.first.first << ' ' << x.first.second << ' ' << x.second.first << ' ' << x.second.second << endl;
+			os << x.first.first << ' ' << x.first.second << ' ' << x.second.first << ' ' << x.second.second << endl;
 		}*/
 
-		for (int i = 0; i < 4; ++i) {
-			if (i == 0) {
-				cout << "--- ÃÑ ½Ã°£(O_time[0]) --- " << endl;
-			}
-			else {
-				cout << "--- °¢ ½Ã°£(O_time[" << i << "] ---" << endl;
-			}
-			cout << "O : " << O_time[i] << "\tB : " << B_time[i] << "\tX : " << X_time[i] << endl;
-		}
-
-		cout << "--- O ---" << endl;
-		for (auto x : contents_time) {
-			if (x.second.second == 'B') continue;
-			cout << x.first << ' ' << x.second.first << endl;
-		}
-
-		cout << "--- B --- " << endl;
-		for (auto x : contents_time) {
-			if (x.second.second == 'O') continue;
-			cout << x.first << ' ' << x.second.first << endl;
-		}
-
+		os << "\n    --------------------------- [   ê¸°ë¡í•œ í‘œ   ] ------------------------" << endl;
 		int hour = 7;
 		for (int i = 0; i < 13; ++i) {
+			os << "    ";
 			if (hour < 10 && hour != 7) {
-				cout << '0';
+				os << '0';
 			}
 			if (hour == 12) {
 				hour++;
@@ -322,65 +279,169 @@ public:
 				hour += 2;
 			}
 			if (hour == 7) {
-				cout << "  ";
+				os << "  ";
 				hour++;
 			}
 			else {
-				cout << hour++;
+				os << hour++;
 			}
 			for (int j = 1; j < 61; ++j) {
 				if ((j - 1) % 10 == 0) {
-					cout << '|';
+					os << '|';
 				}
-				cout << graph_table[i][j];
+				os << graph_table[i][j];
 			}
-			cout << endl;
+			os << endl;
+		}
+	
+
+		vector<pair<int, string>> for_O, for_B;
+		for (auto x : contents_time) {
+			if (x.second.second >= 'a') {
+				for_B.push_back({ x.second.first,x.first });
+			}
+			else {
+				for_O.push_back({ x.second.first,x.first });
+			}
+		}
+		sort(for_O.begin(), for_O.end(), greater<pair<int,string>>()); //í™œìš©í•œ ì‹œê°„, í™œìš©ëª»í•œì‹œê°„ sort
+		sort(for_B.begin(), for_B.end(), greater<pair<int,string>>());
+
+		os << "\n    --------------------------   [í™œìš©í•œ ì‹œê°„]   --------------------------" << endl;
+		for (auto x : for_O) {
+			os << "\t\t\t";
+			int len = x.second.size();
+			for (auto y : record) {
+				if (y.second.second == x.second) {
+					os << y.first.second << ". ";
+					break;
+				}
+			}
+			os << x.second;
+			for (int i = 0; i < 20 - len; ++i) { // ê¸€ììˆ˜ 20 ì´ë‚´ì´ë©´ ê³µë°± ë§Œë“¤ì–´ì¤€ë‹¤.
+				os << ' ';
+			}
+			os << "\t| " << x.first << endl;
+		}
+		os << "    ---------------------------  [í™œìš©ëª»í•œ ì‹œê°„]  -------------------------" << endl;
+		for (auto x : for_B) {
+			os << "\t\t\t";
+			for (auto y : record) {
+				if (y.second.second == x.second) {
+					os << y.first.second << ". ";
+					break;
+				}
+			}
+			int len = x.second.size();
+			os << x.second;
+			for (int i = 0; i < 20 - len; ++i) { // ê¸€ììˆ˜ 20 ì´ë‚´ì´ë©´ ê³µë°± ë§Œë“¤ì–´ì¤€ë‹¤.
+				os << ' ';
+			}
+			os << "\t| " << x.first << endl; // ë§ˆì§€ë§‰ tabìœ¼ë¡œ ìì˜í•œ ìë¦¬ ì°¨ì´ ë‚˜ëŠ”ê±° ì±„ì›Œì¤€ë‹¤. 
+		}
+		
+		for (int i = 0; i < 4; ++i) {
+			if (i == 0) {
+				os << "\n    --------------------------- [  ì´ í™œìš©í•œ ì‹œê°„] ------------------------" << endl;
+			}
+			else {
+				os << "    --------------------------- [";
+				switch (i) {
+
+				case 1:
+					os << "ì˜¤ì „";
+					break;
+				case 2:
+					os << "ì˜¤í›„";
+					break;
+				case 3:
+					os << "ì €ë…";
+					break;
+				default:
+					os << "ì´í™œìš©ì‹œê°„ ì˜¤ë¥˜";
+				}
+
+				os << " í™œìš©í•œ ì‹œê°„] -------------------------" << endl;
+			}
+			os << "			O : " << O_time[i] << " |    B : " << B_time[i] << "\t | X : " << (X_time[i] >= 0 ? X_time[i] : 0) << endl;
 		}
 
-		cout << "¿À´ÃÀÇ ÆÛ¼¾Æ®" << endl;
+		os << "\n    --------------------------- [ì˜¤ëŠ˜ì˜ í¼ì„¼íŠ¸] ---------------------------" << endl;
 		for (int i = 0; i < 4; ++i) {
-			cout << i << " : " << todaypercent[i] << "%\n";
+			switch (i) {
+			case 0:
+				os << "\t\t\t\t í•˜ë£¨ : ";
+				break;
+			case 1:
+				os << "\t\t\t\t ì˜¤ì „ : ";
+				break;
+			case 2:
+				os << "\t\t\t\t ì˜¤í›„ : ";
+				break;
+			case 3:
+				os << "\t\t\t\t ì €ë… : ";
+				break;
+			default:
+				os << "í¼ì„¼íŠ¸ì—ëŸ¬" << endl;
+				break;
+			}
+			os << todaypercent[i] << "%\n";
 		}
 	}
 };
 
-
-
 int main()
 {
-	string filePath = "time.txt";
 	mytime go;
+	string filePath = "time.txt";
 
-	int for_first_line_cnt = 0; // ·¦½Ç½Ã°£, ½ÃÀÛ½Ã°£, ¾ÆÄ§½Ã°£ Ã¼Å©¿ë
+	cout << "ë…„ë„ ë ë‘ìë¦¬, ì›”, ì¼ ì„ ì…ë ¥í•˜ì„¸ìš” (ex 180123) : ";
+	string filename;
+	cin >> filename;
+	filename += ".txt";
+	string dirname = filename.substr(0, 4);
+	ofstream writeFile(filename.data());
+
+	int for_first_line_cnt = 0; // ë©ì‹¤ì‹œê°„, ì‹œì‘ì‹œê°„, ì•„ì¹¨ì‹œê°„ ì²´í¬ìš©
 	int time_index = 0;
 	ifstream openFile(filePath.data());
 	if (openFile.is_open()) {
 		string line;
+		writeFile << "\t\t\t\t---- ë°ì´í„° ----\n";
 		while (getline(openFile, line)) {
+			
 			if (line[0] == '-') {
 				time_index++;
+				writeFile << "\t\t  " << line << '\n';
 				continue;
 			}
 
-			//Ã¹ÁÙ Ã³¸®¿ë
+			//ì²«ì¤„ ì²˜ë¦¬ìš©
 			if (for_first_line_cnt < 3) {
+				writeFile << "\t\t\t\t" << line << '\n';
 				go.first_line_check(line, for_first_line_cnt);
 			}
 			else {
-				//½Ã°£Ç¥·Î ³ª¸ÓÁö´Â ´Ù º¸³»±â
+				//ë§¨ ì•ì— ì…ë ¥ë˜ëŠ” ë¬¸ìëŠ” í›„ì— ìˆœì„œëŒ€ë¡œ ë‹¤ë¥¸ ì•ŒíŒŒë²³ìœ¼ë¡œ ë³€ê²½ëœë‹¤. 
+				//ì‹œê°„í‘œë¡œ ë‚˜ë¨¸ì§€ëŠ” ë‹¤ ë³´ë‚´ê¸°
 				go.time_classification(time_index, line);
+				writeFile << "\t\t\t       " << line << '\n';
 			}
 
-			for_first_line_cnt++; // first_line À§ÇÑ cnt
+			for_first_line_cnt++; // first_line ìœ„í•œ cnt
 		}
 		openFile.close();
 	}
 	go.color_time_cal();
 	go.contents_time_cal();
+	go.recode_sort_and_alphabet_change();
+	go.for_table_data_cal();
 	go.table_cal();
 	go.todaypercent_cal();
 	//go.debug_print();
-	go.print_data();
+	
+	go.print_data(cout, filename);
+	go.print_data(writeFile, filename);
 
 	return 0;
 }
