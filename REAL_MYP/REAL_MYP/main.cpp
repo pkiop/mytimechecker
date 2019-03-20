@@ -16,6 +16,7 @@ using namespace std;
 class mytime {
 	int lab_h, lab_m; // for lab arrive
 	int st_h, st_m; // for start tiem
+	int sleep_h, sleep_m;
 	string morning_exercise;
 
 	enum for_firstline {
@@ -60,14 +61,31 @@ public:
 	//데이터 입력부분 끝
 
 	//text 입력받은 데이터 처리부분
+	void sleeping_time_cal(string &s) {
+		int h, m;
+		for (int i = 0; i < s.size(); ++i) {
+			cout << i << ' ' << s[i] << endl;
+		}
+		h = (int(s[18] - '0') * 10 + int(s[19] - '0')) - (int(s[12] - '0') * 10 + int(s[13] - '0'));
+		m = (int(s[21] - '0') * 10 + int(s[22] - '0')) - (int(s[15] - '0') * 10 + int(s[16] - '0'));
+		cout << h << ':' << m << endl;
+		system("pause");
+		if (m < 0) {
+			h--;
+			m += 60;
+		}
+		mytime::sleep_h = h;
+		mytime::sleep_m = m;
+	};
+
 	void first_line_check(string &s, int cnt) { // 랩실도착, 시작시간, 아침운동 체크용
 		switch (cnt) {
 		case lab_arrive:
 			//12부터 시작하는 이유. 한글을 char로 바꾸면 ?가 되는데 한글 한글자당 ?? 로 되어서 2칸씩 차지하는 걸로 계산 
-			mytime::lab_arrive_func(int(s[12] - '0'), int(s[14] - '0') * 10 + int(s[15] - '0')); // 앞부분 빼고 시간만 바꿔서 넣기
+			mytime::lab_arrive_func((int(s[11] - '0') * 10 + int(s[12] - '0')), int(s[14] - '0') * 10 + int(s[15] - '0')); // 앞부분 빼고 시간만 바꿔서 넣기
 			break;
 		case start_time:
-			mytime::start_time_func(int(s[12] - '0'), int(s[14] - '0') * 10 + int(s[15] - '0')); // 앞부분 빼고 시간만 바꿔서 넣기
+			mytime::start_time_func((int(s[11] - '0') * 10 + int(s[12] - '0')), int(s[14] - '0') * 10 + int(s[15] - '0')); // 앞부분 빼고 시간만 바꿔서 넣기
 			break;
 		case M_exercise:
 			vector<char> input;
@@ -395,6 +413,7 @@ public:
 			}
 			os << todaypercent[i] << "%\n";
 		}
+		os << "잔 시간 : " << sleep_h << ':' << sleep_m;
 	}
 };
 
@@ -423,7 +442,10 @@ int main()
 			}
 
 			//첫줄 처리용
-			if (for_first_line_cnt < 3) {
+			if (for_first_line_cnt == 0) {
+				go.sleeping_time_cal(line);
+			}
+			if (for_first_line_cnt < 4) {
 				writeFile << "\t\t\t\t" << line << '\n';
 				go.first_line_check(line, for_first_line_cnt);
 			}
