@@ -11,6 +11,9 @@
 #include <direct.h> //폴더 만들기 위함
 #include <windows.h> // 폴더 만들기 위함
 
+#include "mysql.h"
+
+#pragma comment(lib, "libmysql.lib")
 using namespace std;
 
 class mytime {
@@ -68,8 +71,7 @@ public:
 		}
 		h = (int(s[18] - '0') * 10 + int(s[19] - '0')) - (int(s[12] - '0') * 10 + int(s[13] - '0'));
 		m = (int(s[21] - '0') * 10 + int(s[22] - '0')) - (int(s[15] - '0') * 10 + int(s[16] - '0'));
-		cout << h << ':' << m << endl;
-		system("pause");
+
 		if (m < 0) {
 			h--;
 			m += 60;
@@ -419,6 +421,88 @@ public:
 
 int main()
 {
+	cout << mysql_get_client_info() << endl;
+	system("pause");
+
+	MYSQL *conn = mysql_init(NULL);
+
+/*	if (mysql_real_connect(conn, "localhost", "root", "Soalfo10!", "pkiop_planner", 3306, NULL, 0) == NULL) {
+		cerr << mysql_error(conn);
+		mysql_close(conn);
+		return 1;
+	}
+*/
+
+	//if (mysql_query(conn, "show databases")) {
+	//	cerr << mysql_error(conn);
+	//	mysql_close(conn);
+	//	return 1;
+	//}
+	cout << "1" << endl;
+	system("pause");
+
+
+
+
+		if (mysql_real_connect(conn, "localhost", "root", "Soalfo10!", "testdb", 3306, NULL, 0) == NULL) {
+		cerr << mysql_error(conn);
+		mysql_close(conn);
+		system("pause");
+		return 1;
+	}
+cout << "1" << endl;
+	system("pause");
+	if (mysql_query(conn, "DROP TABLE IF EXISTS Cars")) {
+		cerr << mysql_error(conn);
+		system("pause");
+	}
+	if (mysql_query(conn, "CREATE TABLE Cars (Id INT, Name TEXT, Price INT)"))
+	{
+		fprintf(stderr, "%s\n", mysql_error(conn));
+		mysql_close(conn);
+		system("pause");
+		exit(1);
+	}
+
+	if (mysql_query(conn, "INSERT INTO Cars VALUES(3, 'Skoda', 9000)"))
+	{
+		cout << "false" << endl;
+	}
+	if (mysql_query(conn, "INSERT INTO Cars VALUES(4, 'Volvo', 29000)"))
+	{
+		cout << "false" << endl;
+	}
+	if (mysql_query(conn, "INSERT INTO Cars VALUES(5, 'Bentley', 350000)"))
+	{
+		cout << "false" << endl;
+	}
+	if (mysql_query(conn, "INSERT INTO Cars VALUES(6, 'Citroen', 21000)"))
+	{
+		cout << "false" << endl;
+	}
+	if (mysql_query(conn, "INSERT INTO Cars VALUES(7, 'Hummer', 41400)"))
+	{
+		cout << "false" << endl;
+	}
+	if (mysql_query(conn, "INSERT INTO Cars VALUES(8, 'Volkswagen', 21600)"))
+	{
+		cout << "false" << endl;
+	}
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
 	mytime go;
 	string filePath = "time.txt";
 	cout << "년도 끝 두자리, 월, 일 을 입력하세요 (ex 180123) : ";
