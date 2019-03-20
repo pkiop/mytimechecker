@@ -426,7 +426,7 @@ int main()
 
 	MYSQL *conn = mysql_init(NULL);
 
-/*	if (mysql_real_connect(conn, "localhost", "root", "Soalfo10!", "pkiop_planner", 3306, NULL, 0) == NULL) {
+/*	if (mysql_real_connect(conn, "localhost", "root", "!", "pkiop_planner", 3306, NULL, 0) == NULL) {
 		cerr << mysql_error(conn);
 		mysql_close(conn);
 		return 1;
@@ -444,7 +444,7 @@ int main()
 
 
 
-		if (mysql_real_connect(conn, "localhost", "root", "Soalfo10!", "testdb", 3306, NULL, 0) == NULL) {
+		if (mysql_real_connect(conn, "localhost", "root", "!", "testdb", 3306, NULL, 0) == NULL) {
 		cerr << mysql_error(conn);
 		mysql_close(conn);
 		system("pause");
