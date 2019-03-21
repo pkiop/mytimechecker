@@ -26,8 +26,8 @@ class mytime {
 		lab_arrive, start_time, M_exercise
 	};
 	//공부 한 것들 리스트
-	vector < pair<pair<int, char>, pair<int, string>>> record; // index, color, time, contents
-	vector < pair<pair<int, int>, pair<int, char>>> for_table_data; // 시작시간의 h,m 과 뒤의 시간 
+	vector < pair<pair<int, char>, pair<int, string> > > record; // index, color, time, contents
+	vector < pair<pair<int, int>, pair<int, char> > > for_table_data; // 시작시간의 h,m 과 뒤의 시간 
 
 	//results
 	int O_time[4], B_time[4], X_time[4]; // Orange, Blue, Xtime (X time은 lab에 없었거나) 0 : 총시간 1 : 오전 2 : 오후 3 : 저녁
@@ -69,8 +69,20 @@ public:
 		for (int i = 0; i < s.size(); ++i) {
 			cout << i << ' ' << s[i] << endl;
 		}
-		h = (int(s[18] - '0') * 10 + int(s[19] - '0')) - (int(s[12] - '0') * 10 + int(s[13] - '0'));
-		m = (int(s[21] - '0') * 10 + int(s[22] - '0')) - (int(s[15] - '0') * 10 + int(s[16] - '0'));
+		if (int(s[12] - '0') > 0) {
+			h = int(s[18] - '0') * 10 + int(s[19] - '0');
+			m = int(s[21] - '0') * 10 + int(s[22] - '0');
+			h += (23 - (int(s[12] - '0') * 10 + int(s[13] - '0')));
+			m += (60 - (int(s[18] - '0') * 10 + int(s[19] - '0')));
+			while (m >= 60) {
+				m -= 60;
+				h++;
+			}
+		}
+		else {
+			h = (int(s[18] - '0') * 10 + int(s[19] - '0')) - (int(s[12] - '0') * 10 + int(s[13] - '0'));
+			m = (int(s[21] - '0') * 10 + int(s[22] - '0')) - (int(s[15] - '0') * 10 + int(s[16] - '0'));
+		}
 
 		if (m < 0) {
 			h--;
@@ -84,10 +96,10 @@ public:
 		switch (cnt) {
 		case lab_arrive:
 			//12부터 시작하는 이유. 한글을 char로 바꾸면 ?가 되는데 한글 한글자당 ?? 로 되어서 2칸씩 차지하는 걸로 계산 
-			mytime::lab_arrive_func((int(s[11] - '0') * 10 + int(s[12] - '0')), int(s[14] - '0') * 10 + int(s[15] - '0')); // 앞부분 빼고 시간만 바꿔서 넣기
+			mytime::lab_arrive_func((int(s[12] - '0') * 10 + int(s[13] - '0')), int(s[15] - '0') * 10 + int(s[16] - '0')); // 앞부분 빼고 시간만 바꿔서 넣기
 			break;
 		case start_time:
-			mytime::start_time_func((int(s[11] - '0') * 10 + int(s[12] - '0')), int(s[14] - '0') * 10 + int(s[15] - '0')); // 앞부분 빼고 시간만 바꿔서 넣기
+			mytime::start_time_func((int(s[12] - '0') * 10 + int(s[13] - '0')), int(s[15] - '0') * 10 + int(s[16] - '0')); // 앞부분 빼고 시간만 바꿔서 넣기
 			break;
 		case M_exercise:
 			vector<char> input;
@@ -136,7 +148,7 @@ public:
 
 		char Alpha = 'A';
 		for (auto x : for_O) {
-			for (int i = 0; i < record.size(); ++i) { //여기 auto로 해버리면 값 안바뀐다. 
+			for (int i = 0; i < record.size(); ++i) { //여기 auto로 하면  값 안바뀐다. 
 				if (record[i].second.second == x.second) {
 					record[i].first.second = Alpha;
 				}
@@ -444,7 +456,7 @@ int main()
 
 
 
-		if (mysql_real_connect(conn, "localhost", "root", "!", "testdb", 3306, NULL, 0) == NULL) {
+	if (mysql_real_connect(conn, "localhost", "root", "1111", "testdb", 3306, NULL, 0) == NULL) {
 		cerr << mysql_error(conn);
 		mysql_close(conn);
 		system("pause");
