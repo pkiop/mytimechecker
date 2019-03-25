@@ -36,6 +36,12 @@ class mytime {
 	map<string, pair<int, char> > contents_time; // key로 한 일 적고 값으로 시간과 그것의 color
 
 public:
+	string ret_todaypercent() {
+		return to_string(todaypercent[0]);
+	}
+	string ret_sleeptime() {
+		return (to_string(sleep_h) + '.' + to_string(sleep_m));
+	}
 	//debugging 용. 지워도 댐
 	void contents_time_size_print() {
 		cout << "contents_time.size : " << contents_time.size() << endl;
@@ -168,7 +174,7 @@ public:
 
 	void for_table_data_cal() {
 		for (int i = 0; i < record.size(); ++i) {
-			if(for_table_data[i].second.second != 'Z' && for_table_data[i].second.second != 'z') // Z남겨놓는 이유는 수업은 따로처리하기위함
+			if (for_table_data[i].second.second != 'Z' && for_table_data[i].second.second != 'z') // Z남겨놓는 이유는 수업은 따로처리하기위함
 				for_table_data[i].second.second = record[i].first.second;
 		}
 	}
@@ -433,100 +439,72 @@ public:
 
 int main()
 {
-	cout << mysql_get_client_info() << endl;
-	system("pause");
 
-	MYSQL *conn = mysql_init(NULL);
 
-/*	if (mysql_real_connect(conn, "localhost", "root", "!", "pkiop_planner", 3306, NULL, 0) == NULL) {
-		cerr << mysql_error(conn);
-		mysql_close(conn);
-		return 1;
-	}
-*/
+	/*	if (mysql_real_connect(conn, "localhost", "root", "!", "pkiop_planner", 3306, NULL, 0) == NULL) {
+			cerr << mysql_error(conn);
+			mysql_close(conn);
+			return 1;
+		}
+	*/
 
 	//if (mysql_query(conn, "show databases")) {
 	//	cerr << mysql_error(conn);
 	//	mysql_close(conn);
 	//	return 1;
 	//}
-	cout << "1" << endl;
-	system("pause");
-
-
-
-
-	if (mysql_real_connect(conn, "localhost", "root", "1111", "testdb", 3306, NULL, 0) == NULL) {
-		cerr << mysql_error(conn);
-		mysql_close(conn);
-		system("pause");
-		return 1;
-	}
-cout << "1" << endl;
-	system("pause");
-	if (mysql_query(conn, "DROP TABLE IF EXISTS Cars")) {
-		cerr << mysql_error(conn);
-		system("pause");
-	}
-	if (mysql_query(conn, "CREATE TABLE Cars (Id INT, Name TEXT, Price INT)"))
-	{
-		fprintf(stderr, "%s\n", mysql_error(conn));
-		mysql_close(conn);
-		system("pause");
-		exit(1);
-	}
-
-	if (mysql_query(conn, "INSERT INTO Cars VALUES(3, 'Skoda', 9000)"))
-	{
-		cout << "false" << endl;
-	}
-	if (mysql_query(conn, "INSERT INTO Cars VALUES(4, 'Volvo', 29000)"))
-	{
-		cout << "false" << endl;
-	}
-	if (mysql_query(conn, "INSERT INTO Cars VALUES(5, 'Bentley', 350000)"))
-	{
-		cout << "false" << endl;
-	}
-	if (mysql_query(conn, "INSERT INTO Cars VALUES(6, 'Citroen', 21000)"))
-	{
-		cout << "false" << endl;
-	}
-	if (mysql_query(conn, "INSERT INTO Cars VALUES(7, 'Hummer', 41400)"))
-	{
-		cout << "false" << endl;
-	}
-	if (mysql_query(conn, "INSERT INTO Cars VALUES(8, 'Volkswagen', 21600)"))
-	{
-		cout << "false" << endl;
-	}
-
-
-
-
-
-
-
-
-
-
-
-
-
 
 
 	mytime go;
 	string filePath = "time.txt";
 	cout << "년도 끝 두자리, 월, 일 을 입력하세요 (ex 180123) : ";
-	string filename;
+	string filename, filename_out;
 	cin >> filename;
+	filename_out = filename;
 	filename += ".txt";
 	string dirname = filename.substr(0, 4);
 	ofstream writeFile(filename.data());
 
+	//요일 구하기
+	int monthday[] = { 31,28,31,30,31,30,31,31,30,31,30,31 };
+	string week[] = { "Mo","Tu", "We", "Th", "Fr", "Sa", "Su" };
+	int date = stoi(filename);
+	int whatweek;
+	string yoil_st;
+	if (date / 10000 == 19) {
+		int month = (date / 100) % 100;
+		int day = date % 100;
+		int whatweekday = day;
+		for (int i = 0; i < month - 1; ++i) {
+			day += monthday[i];
+		}
+		yoil_st = week[(day) % 7];
+
+		//그 달의 첫날의 요일 알기
+		int day2 = 1;
+		for (int i = 0; i < month - 1; ++i) {
+			day2 += monthday[i];
+		}
+		int yoil = day % 7; // 첫날의 요일
+		if ((whatweekday % 7) < yoil) {
+			whatweek = whatweekday / 7 + 1;
+		}
+		else {
+			whatweek = whatweekday / 7 + 2;
+		}
+
+		system("pause");
+	}
+	else {
+		cerr << "아직 19년도만" << endl;
+		system("pause");
+		return -1;
+	}
+
 	int for_first_line_cnt = 0; // 랩실시간, 시작시간, 아침시간 체크용
 	int time_index = 0;
 	ifstream openFile(filePath.data());
+	string today_exercise;
 	if (openFile.is_open()) {
 		string line;
 		writeFile << "\t\t\t\t---- 데이터 ----\n";
@@ -544,6 +522,9 @@ cout << "1" << endl;
 			if (for_first_line_cnt < 4) {
 				writeFile << "\t\t\t\t" << line << '\n';
 				go.first_line_check(line, for_first_line_cnt);
+			}
+			else if (for_first_line_cnt == 4) {
+				today_exercise = line;
 			}
 			else {
 				//맨 앞에 입력되는 문자는 후에 순서대로 다른 알파벳으로 변경된다. 
@@ -566,6 +547,34 @@ cout << "1" << endl;
 
 	go.print_data(cout, filename);
 	go.print_data(writeFile, filename);
+
+	cout << mysql_get_client_info() << endl;
+
+	MYSQL *conn = mysql_init(NULL);
+
+	if (mysql_real_connect(conn, "localhost", "root", "1111", "pkiop_planner", 3306, NULL, 0) == NULL) {
+		cerr << mysql_error(conn);
+		mysql_close(conn);
+		system("pause");
+		return 1;
+	}
+	cout << " do << " << endl;
+	string query_string = "INSERT INTO result VALUES('" + filename_out + "' , " + (go.ret_todaypercent()) + ", '" + go.ret_sleeptime() + "', '" + today_exercise + "' , " + to_string(whatweek) + ",'" + yoil_st + "')";
+	char* query = new char[query_string.length()];
+	for (int i = 0; i < query_string.length(); ++i) {
+		query[i] = query_string[i];
+	}
+	query[query_string.length()] = ')';
+	const char* query_out = query;
+	cout << query_string << endl;
+	if (mysql_query(conn, query_string.c_str()))
+	{
+		cerr << mysql_error(conn);
+		cout << "false" << endl;
+		system("pause");
+	}
+
+
 	return 0;
 }
 
