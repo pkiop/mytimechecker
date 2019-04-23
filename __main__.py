@@ -58,8 +58,19 @@ def DBget():
 
     result+="</tbody>"
     result+="</table>"
+    curs.close()
     return result
     
+@app.route('/pTEXT')
+def pTEXT():
+    curs.execute("select * from pTEXT")
+    rows = curs.fetchall()
+    result = ""
+    for x in rows:
+        for y in x:
+            result+=str(y)
+    curs.close()
+    return result
 
 @app.route('/')
 def hello():
