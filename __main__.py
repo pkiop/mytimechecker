@@ -49,10 +49,8 @@ def DBget():
          <tbody>
     """
     for x in rows:
-        print(x)
         result += "<tr>"
         for y in x:
-            print(y)
             result+="<td>"
             result+=str(y)
             result+="</td>"
@@ -65,7 +63,6 @@ def DBget():
 
 @app.route('/')
 def hello():
-    """Renders a sample page."""
     return "Hello World!"
 
 @app.route('/DB')
