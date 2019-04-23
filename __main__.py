@@ -67,7 +67,15 @@ def pTEXT():
     curs = conn.cursor()
     curs.execute("select * from pTEXT")
     rows = curs.fetchall()
-    result = ""
+    result = """
+    <!doctype html>
+        <html lang="ko">
+<head>
+	<meta charset="utf-8">
+	<title>OO</title>
+</head>
+    
+    """
     for x in rows:
         for y in x:
             result+=str(y)
