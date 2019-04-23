@@ -21,6 +21,17 @@ def DBget():
     curs.execute("select * from result5")
     rows = curs.fetchall()
     result = """
+        <style>
+         table {
+            border: 1px solid #444444;
+            border-collapse: collapse;
+        }
+        th, td {
+            border: 1px solid #444444;
+            padding: 10px;
+            text-align: center;
+        }
+        </style>
         <table>
          <thead>
             <tr>
@@ -34,14 +45,11 @@ def DBget():
             </tr>
          </thead>
          <tbody>
-        
     """
     for x in rows:
-        print("x임")
         print(x)
         result += "<tr>"
         for y in x:
-            print("y임")
             print(y)
             result+="<td>"
             result+=str(y)
