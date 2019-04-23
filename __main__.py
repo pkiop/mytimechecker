@@ -12,13 +12,13 @@ app = Flask(__name__)
 # Make the WSGI interface available at the top level so wfastcgi can get it.
 wsgi_app = app.wsgi_app
 
-conn = pymysql.connect(host='localhost', user='root', password='1111', db='pkiop_planner', charset='utf8')
+conn = pymysql.connect(host='192.168.1.183', user='root', password='aaaa', db='pkiop_planner', charset='utf8')
 curs = conn.cursor()
 
 
 @app.route('/DBget')
 def DBget():
-    curs.execute("select * from result5")
+    curs.execute("select * from result")
     rows = curs.fetchall()
     result = """
         <style>
@@ -36,7 +36,9 @@ def DBget():
          <thead>
             <tr>
             <th>ID</th>
-            <th>DATE</th>
+            <th>YEAR</th>
+            <th>MONTH</th>
+            <th>DAY</th>
             <th>PERCENT</th>
             <th>SLEEP</th>
             <th>EXERCISE</th>
