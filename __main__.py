@@ -13,11 +13,12 @@ app = Flask(__name__)
 wsgi_app = app.wsgi_app
 
 conn = pymysql.connect(host='192.168.1.183', user='root', password='aaaa', db='pkiop_planner', charset='utf8')
+curs = conn.cursor()
 
 
 @app.route('/DBget')
 def DBget():
-    curs = conn.curser()
+    curs = conn.cursor()
     curs.execute("select * from result")
     rows = curs.fetchall()
     result = """
@@ -63,7 +64,7 @@ def DBget():
     
 @app.route('/pTEXT')
 def pTEXT():
-    curs = conn.curser()
+    curs = conn.cursor()
     curs.execute("select * from pTEXT")
     rows = curs.fetchall()
     result = ""
