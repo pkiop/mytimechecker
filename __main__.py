@@ -6,6 +6,7 @@ It contains the definition of routes and views for the application.
 from flask import Flask
 import json
 import pymysql 
+import codecs
 
 app = Flask(__name__)
 
@@ -74,13 +75,12 @@ def pTEXT():
 	<meta charset="utf-8">
 	<title>OO</title>
 </head>
-    
     """
     for x in rows:
         for y in x:
-            result+=str(y)
+            result+=str(y).encode('utf-8')
     curs.close()
-    return result
+    return result.encode('utf-8')
 
 @app.route('/')
 def hello():
