@@ -10,11 +10,12 @@ Bootstrap(app)
 # Make the WSGI interface available at the top level so wfastcgi can get it.
 wsgi_app = app.wsgi_app
 
+conn = pymysql.connect(host='192.168.1.183', user='root', password='aaaa', db='pkiop_planner', charset='utf8')
+curs = conn.cursor()
 
 
 @app.route('/DBget')
 def DBget():
-    conn = pymysql.connect(host='192.168.1.183', user='root', password='aaaa', db='pkiop_planner', charset='utf8')
     curs = conn.cursor()
     curs.execute("select * from result")
     rows = curs.fetchall()
@@ -57,7 +58,6 @@ def DBget():
     result+="</tbody>"
     result+="</table>"
     curs.close()
-    conn.close()
     return result
     
 @app.route('/pTEXT')
