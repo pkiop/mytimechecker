@@ -1,13 +1,37 @@
 # -*- coding: utf-8 -*-
 
+#server, db
 from flask import Flask, render_template
 from flask_bootstrap import Bootstrap
 import json
 import pymysql 
 import codecs
 
+#crawler
+import sys
+import io
+from bs4 import BeautifulSoup
+import requests
+from selenium import webdriver
+from selenium.webdriver.chrome.options import Options
+import time
+
+
+
 app = Flask(__name__)
 Bootstrap(app)
+
+
+chrome_options = Options()
+chrome_options.add_argument("--headless")
+driver = webdriver.Chrome(chrome_options=chrome_options, executable_path="/usr/lib/chromium-browser/chromedriver")#"home/pi/Project/mytimechecker/crawler/chromedriver")
+#driver = webdriver.Chrome("/home/pi/Project/mytimechecker/crawler/chromedriver")
+driver.set_page_load_timeout(10)
+
+def init(url):
+    driver.get(url)
+    driver.implicitly_wait(0.1)
+    return driver.page_source
 
 # Make the WSGI interface available at the top level so wfastcgi can get it.
 wsgi_app = app.wsgi_app
@@ -152,6 +176,18 @@ def main():
 @app.route('/bootstrap')
 def bootstrap():
     return render_template('bootstrap.html') 
+
+@app.route('/meal')
+def meal():
+    result = front
+    url = "http://www.pusan.ac.kr/kor/CMS/MenuMgr/menuListOnBuilding.do?"
+    soup = BeautifulSoup(init(url), 'html.parser')
+    main2 = soup.select_one('#cont > div.menu-wr > div.wauto-wrap > div.is-wauto-box > table.menu-tbl')
+    soup_string = str(main2)
+    result += soup_string
+    result += back
+    return result
+
 
 @app.route('/DB')
 def db_access():

@@ -31,3 +31,5 @@ file = open('meal.html','w')
 main2 = soup.select_one('#cont > div.menu-wr > div.wauto-wrap > div.is-wauto-box > table.menu-tbl')
 soup_string = str(main2)
 file.write(soup_string)
+
+driver.close()
