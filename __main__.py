@@ -50,7 +50,7 @@ front = """
 	<meta name="author" content="">
 	<link rel="icon" href="http://bootstrapk.com/favicon.ico">
 
-	<title>비이츠랩의  비밀공간</title>
+	<title>PSS</title>
 
 	<!-- Bootstrap core CSS -->
 	<link href="/static/css/bootstrap.min.css" rel="stylesheet">
@@ -71,18 +71,50 @@ front = """
 					<span class="icon-bar"></span>
 				</button>
 				<a class="navbar-brand"
-					href="http://164.125.63.208:5555">비이츠랩의 비밀공간</a>
+					href="http://164.125.63.208:5555">time checker</a>
 			</div>
 			<div id="navbar" class="collapse navbar-collapse">
 				<ul class="nav navbar-nav">
 					<li class="active"><a href="http://164.125.63.208:5555/">main</a></li>
-					<li><a href="http://164.125.63.208:5555/meal">식단</a></li>
+					<li><a href="http://164.125.63.208:5555/DBget">time record</a></li>
+					<li><a href="http://164.125.63.208:5555/bootstrap">empty</a></li>
+					<li><a href="http://www.pusan.ac.kr/kor/CMS/MenuMgr/menuListOnBuilding.do?">식단</a></li>
 					<li><a href="https://bitelab.pusan.ac.kr/ccslab/index.do">Bitelab</a></li>
 				</ul>
 			</div>
 			<!--/.nav-collapse -->
 		</div>
 	</nav>
+    
+    <div class="page-header">
+        <h1>Carousel</h1>
+    </div>
+    <div id="carousel-example-generic" class="carousel slide" data-ride="carousel">
+    <ol class="carousel-indicators">
+        <li data-target="#carousel-example-generic" data-slide-to="0" class="active"></li>
+        <li data-target="#carousel-example-generic" data-slide-to="1"></li>
+        <li data-target="#carousel-example-generic" data-slide-to="2"></li>
+    </ol>
+    <div class="carousel-inner" role="listbox">
+        <div class="item active">
+        <img data-src="holder.js/1140x500/auto/#777:#555/text:First slide" alt="First slide">
+        </div>
+        <div class="item">
+        <img data-src="holder.js/1140x500/auto/#666:#444/text:Second slide" alt="Second slide">
+        </div>
+        <div class="item">
+        <img data-src="holder.js/1140x500/auto/#555:#333/text:Third slide" alt="Third slide">
+        </div>
+    </div>
+    <a class="left carousel-control" href="#carousel-example-generic" role="button" data-slide="prev">
+        <span class="glyphicon glyphicon-chevron-left" aria-hidden="true"></span>
+        <span class="sr-only">Previous</span>
+    </a>
+    <a class="right carousel-control" href="#carousel-example-generic" role="button" data-slide="next">
+        <span class="glyphicon glyphicon-chevron-right" aria-hidden="true"></span>
+        <span class="sr-only">Next</span>
+    </a>
+    </div>
 
 """
 
@@ -152,7 +184,6 @@ def pTEXT():
     result
     for x in rows:
         for y in x:
-	    print type(result)
             result+=str(y).encode('utf-8')
     curs.close()
     return result
@@ -162,12 +193,9 @@ def main():
 	result = front
 	result += """
 		<div class="container">
-			<img width="300px" height="300px" src="https://raw.githubusercontent.com/pkiop/mytimechecker/master/image/godfather.jpg" class="img-responsive center-block img-circle"/>
-		</div>
-		<div class="container">
 			<div class="starter-template">
-				<h1>비이츠랩</h1>
-				<p class="lead"><br> </b>
+				<h1>PSS</h1>
+				<p class="lead">설명하는 곳 <br> HTML CSS JS BOOTSTRAP </b>
 			</div>
 		</div>
 	"""
@@ -185,23 +213,10 @@ def meal():
     soup = BeautifulSoup(init(url), 'html.parser')
     main2 = soup.select_one('#cont > div.menu-wr > div.wauto-wrap > div.is-wauto-box > table.menu-tbl')
     soup_string = str(main2)
-
-    soup_string = soup_string.replace('menu-tbl type-day','table table-striped')		
-    soup_string = soup_string.replace('<td>', '<td class="col-md-15">')
-    soup_string = soup_string.replace('<h3 class="menu-tit01">정식-4,000원</h3>', '')
-    soup_string = soup_string.replace('<span class="blind">캠퍼스별 식단메뉴에 대한 안내제공</span>','')
-    soup_string = soup_string.replace('h3','p')
-    soup_string = soup_string.replace('조식','')
     result += """
-		<div class="container">
-			<div class="starter-template">
-	"""
+        <div class="
+    """
     result += soup_string
-    result += """
-			</div>
-        </div>
-
-	"""
     result += back
     return result
 
