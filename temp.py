@@ -15,6 +15,7 @@ import requests
 from selenium import webdriver
 from selenium.webdriver.chrome.options import Options
 import time
+import os
 
 
 
@@ -81,6 +82,7 @@ front = """
       <script src="https://oss.maxcdn.com/html5shiv/3.7.2/html5shiv.min.js"></script>
       <script src="https://oss.maxcdn.com/respond/1.4.2/respond.min.js"></script>
     <![endif]-->
+</head>
 <body>
 
 	<nav class="navbar navbar-inverse navbar-fixed-top">
@@ -186,6 +188,15 @@ def pTEXT():
 def main():
 	result = front
 	result += """
+        <style>
+              .carousel-inner > .item > img {
+               top: 0;
+              left: 0;
+              min-width: 10%;
+              min-height: 300px;
+    } 
+
+        </style>
         <div class="container">
 			<img width="300px" height="300px" src="https://raw.githubusercontent.com/pkiop/mytimechecker/master/image/godfather.jpg" class="img-responsive center-block img-circle"/>
 		</div>
@@ -195,27 +206,14 @@ def main():
 				<p class="lead"><br> </b>
 			</div>
 		</div>
-
-
-
-    <div class="page-header">
-        <h1>Carousel</h1>
-    </div>
-    <div id="carousel-example-generic" class="carousel slide" data-ride="carousel">
-    <ol class="carousel-indicators">
-        <li data-target="#carousel-example-generic" data-slide-to="0" class="active"></li>
-        <li data-target="#carousel-example-generic" data-slide-to="1"></li>
-        <li data-target="#carousel-example-generic" data-slide-to="2"></li>
-    </ol>
-    <div class="carousel-inner" role="listbox">
+        
+<div id="carouselExampleControls" class="carousel slide" data-ride="carousel">
+    <div class="carousel-inner">
         <div class="item active">
-        <img src="./image/godfather.jpg" alt="First slide">
+        <a href="https://ee.pusan.ac.kr/ee/index.do"><img class="d-block w-100 center-block" src="https://raw.githubusercontent.com/pkiop/mytimechecker/master/image/ee.png" alt="First slide"></a>
         </div>
         <div class="item">
-        <img src="./image/ee.png" alt="First slide">
-        </div>
-        <div class="item">
-        <img data-src="holder.js/1140x500/auto/#555:#333/text:Third slide" alt="Third slide">
+        <img class="d-block w-100 center-block" src="https://raw.githubusercontent.com/pkiop/mytimechecker/master/image/pusan.png" alt="Third slide">
         </div>
     </div>
     <a class="left carousel-control" href="#carousel-example-generic" role="button" data-slide="prev">
@@ -238,24 +236,45 @@ def bootstrap():
 @app.route('/meal')
 def meal():
     result = front
+    result += """
+        <div class="container">
+    """
     url = "http://www.pusan.ac.kr/kor/CMS/MenuMgr/menuListOnBuilding.do?"
     soup = BeautifulSoup(init(url), 'html.parser')
     main2 = soup.select_one('#cont > div.menu-wr > div.wauto-wrap > div.is-wauto-box > table.menu-tbl')
     soup_string = str(main2)
+    soup_string = soup_string.replace('<caption><span class="blind">캠퍼스별 식단메뉴에 대한 안내제공</span></caption>', '')
+    soup_string = soup_string.replace('<h3 class="menu-tit01">정식-4,000원</h3>','')
+    soup_string = soup_string.replace('<div class="day">토</div>','')
+    soup_string = soup_string.replace('<div class="date">2019.05.04</div>','')
+    result += soup_string
     result += """
-        <div class="
+        </div>
     """
+
+    url = "http://www.pusan.ac.kr/kor/CMS/MenuMgr/menuListOnWeekly.do?"
+    soup = BeautifulSoup(init(url), 'html.parser')
+    main3 = soup.select_one('#cont > div.menu-wr > div.is-wauto-box.menu-tbl-wr > table > tbody')
+    soup_string = str(main3)
+
     result += soup_string
     result += back
     return result
 
+
+@app.route('/goodwrite/compile')
+def goodwritecompile():
+    f = open("./goodwrite/compile.html", "r", encoding='utf8')
+    data = f.read()
+    f.close()
+    return data
 
 @app.route('/DB')
 def db_access():
     return "It's db"
 
 if __name__ == '__main__':
-    import os
+    os.path.join(app.instance_path, '/')
     HOST = os.environ.get('SERVER_HOST', '0.0.0.0')
     try:
         PORT = int(os.environ.get('SERVER_PORT', '5555'))
