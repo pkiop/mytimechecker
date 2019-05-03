@@ -96,7 +96,7 @@ front = """
 					<span class="icon-bar"></span>
 				</button>
 				<a class="navbar-brand"
-					href="http://164.125.63.208:5555">time checker</a>
+					href="http://164.125.63.208:5555">비이츠랩의 비밀공간</a>
 			</div>
 			<div id="navbar" class="collapse navbar-collapse">
 				<ul class="nav navbar-nav">
@@ -264,10 +264,15 @@ def meal():
 
 @app.route('/goodwrite/compile')
 def goodwritecompile():
+    result = front
     f = open("./goodwrite/compile.html", "r", encoding='utf8')
     data = f.read()
+     
+    data = data.replace('compile_files','https://raw.githubusercontent.com/pkiop/mytimechecker/master/goodwrite/compile_files')
     f.close()
-    return data
+    result += data
+    result += back
+    return result
 
 @app.route('/DB')
 def db_access():
