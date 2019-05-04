@@ -205,7 +205,7 @@ def main():
         <a href="https://ee.pusan.ac.kr"><img class="center-block" src="https://raw.githubusercontent.com/pkiop/mytimechecker/master/image/eelogo.png" alt="First slide"></a>
         </div>
         <div class="item">
-        <a href="https://www.pusan.ac.kr"><img class="center-block" src="https://raw.githubusercontent.com/pkiop/mytimechecker/master/image/pusan.png" alt="Second slide"></a>
+        <a href="https://www.pusan.ac.kr"><img class="center-block" src="https://raw.githubusercontent.com/pkiop/mytimechecker/master/image/pusanlogo.png" alt="Second slide"></a>
         </div>
     </div>
 </div>
