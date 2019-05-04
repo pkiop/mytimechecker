@@ -96,13 +96,13 @@ front = """
 					<span class="icon-bar"></span>
 				</button>
 				<a class="navbar-brand"
-					href="http://164.125.63.208:5555">비이츠랩의 비밀공간</a>
+					href="http://localhost:5555">비이츠랩의 비밀공간</a>
 			</div>
 			<div id="navbar" class="collapse navbar-collapse">
 				<ul class="nav navbar-nav">
-					<li class="active"><a href="http://164.125.63.208:5555/">main</a></li>
-					<li><a href="http://164.125.63.208:5555/meal">식단</a></li>
-					<li><a href="http://164.125.63.208:5555/bootstrap">empty</a></li>
+					<li class="active"><a href="http://localhost:5555/">main</a></li>
+					<li><a href="http://localhost:5555/meal">식단</a></li>
+					<li><a href="http://localhost:5555/bootstrap">empty</a></li>
 					<li><a href="https://bitelab.pusan.ac.kr/ccslab/index.do">Bitelab</a></li>
 				</ul>
 			</div>
@@ -207,7 +207,7 @@ def main():
 			</div>
 		</div>
         
-<div id="carouselExampleControls" class="carousel slide" data-ride="carousel">
+<div id="carouselExampleSlidesOnly" class="carousel slide" data-ride="carousel">
     <div class="carousel-inner">
         <div class="item active">
         <a href="https://ee.pusan.ac.kr/ee/index.do"><img class="d-block w-100 center-block" src="https://raw.githubusercontent.com/pkiop/mytimechecker/master/image/ee.png" alt="First slide"></a>
@@ -216,14 +216,6 @@ def main():
         <img class="d-block w-100 center-block" src="https://raw.githubusercontent.com/pkiop/mytimechecker/master/image/pusan.png" alt="Third slide">
         </div>
     </div>
-    <a class="left carousel-control" href="#carousel-example-generic" role="button" data-slide="prev">
-        <span class="glyphicon glyphicon-chevron-left" aria-hidden="true"></span>
-        <span class="sr-only">Previous</span>
-    </a>
-    <a class="right carousel-control" href="#carousel-example-generic" role="button" data-slide="next">
-        <span class="glyphicon glyphicon-chevron-right" aria-hidden="true"></span>
-        <span class="sr-only">Next</span>
-    </a>
     </div>
 	"""
 	result += back
@@ -264,13 +256,20 @@ def meal():
 
 @app.route('/goodwrite/compile')
 def goodwritecompile():
+    filename = '컴파일과 빌드'
+    fileroute = '/goodwrite/compile'
+
     result = front
+    result += '<div class="container">'
+    result += '<h3>' + filename + '</h3>' + '</div><br><br>'
+    result += '<div class="container">'
     f = open("./goodwrite/compile.html", "r", encoding='utf8')
     data = f.read()
      
-    data = data.replace('compile_files','https://raw.githubusercontent.com/pkiop/mytimechecker/master/goodwrite/compile_files')
+    data = data.replace('compile_files','https://raw.githubusercontent.com/pkiop/mytimechecker/master' + fileroute + '_files')
     f.close()
     result += data
+    result += '</div>'
     result += back
     return result
 
