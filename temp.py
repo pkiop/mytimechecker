@@ -188,15 +188,7 @@ def pTEXT():
 def main():
 	result = front
 	result += """
-        <style>
-              .carousel-inner > .item > img {
-               top: 0;
-              left: 0;
-              min-width: 10%;
-              min-height: 300px;
-    } 
 
-        </style>
         <div class="container">
 			<img width="300px" height="300px" src="https://raw.githubusercontent.com/pkiop/mytimechecker/master/image/godfather.jpg" class="img-responsive center-block img-circle"/>
 		</div>
