@@ -202,10 +202,10 @@ def main():
 <div id="carouselExampleSlidesOnly" class="carousel slide" data-ride="carousel">
     <div class="carousel-inner">
         <div class="item active">
-        <a href="https://ee.pusan.ac.kr/ee/index.do"><img class="d-block w-100 center-block" src="https://raw.githubusercontent.com/pkiop/mytimechecker/master/image/ee.png" alt="First slide"></a>
+        <a href="https://ee.pusan.ac.kr"><img class="center-block" src="https://raw.githubusercontent.com/pkiop/mytimechecker/master/image/ee.png" alt="First slide"></a>
         </div>
         <div class="item">
-        <img class="d-block w-100 center-block" src="https://raw.githubusercontent.com/pkiop/mytimechecker/master/image/pusan.png" alt="Third slide">
+        <a href="https://www.pusan.ac.kr"><img class="center-block" src="https://raw.githubusercontent.com/pkiop/mytimechecker/master/image/pusan.png" alt="Third slide"></a>
         </div>
     </div>
     </div>
