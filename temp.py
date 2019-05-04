@@ -188,10 +188,10 @@ def pTEXT():
 def main():
 	result = front
 	result += """
-
+        <br><br><br><br>
         <div class="container">
-			<img width="300px" height="300px" src="https://raw.githubusercontent.com/pkiop/mytimechecker/master/image/godfather.jpg" class="img-responsive center-block img-circle"/>
-		</div>
+	        <img width="300px" height="300px" src="https://raw.githubusercontent.com/pkiop/mytimechecker/master/image/godfather.jpg" class="img-responsive center-block img-circle"/>
+        </div>
 		<div class="container">
 			<div class="starter-template">
 				<h1>비이츠랩</h1>
@@ -221,12 +221,27 @@ def bootstrap():
 def meal():
     result = front
     result += """
+        <style>
+        ul{
+            list-style:none;
+        }
+        @media (min-width: 1px){
+            .container{
+                width:1000px;
+            }
+        }
+        </style>
         <div class="container">
+        <h3>금정회관 2층</h3>
+       
     """
     url = "http://www.pusan.ac.kr/kor/CMS/MenuMgr/menuListOnBuilding.do?"
     soup = BeautifulSoup(init(url), 'html.parser')
     main2 = soup.select_one('#cont > div.menu-wr > div.wauto-wrap > div.is-wauto-box > table.menu-tbl')
     soup_string = str(main2)
+    soup_string = soup_string.replace('<th scope="col">','<th style="width: 19%">')
+    soup_string = soup_string.replace('<th style="width: 19%">구분','<th style="width: 3%">')
+    soup_string = soup_string.replace('<table class="menu-tbl type-day"', '<table class="table table-striped"')
     soup_string = soup_string.replace('<caption><span class="blind">캠퍼스별 식단메뉴에 대한 안내제공</span></caption>', '')
     soup_string = soup_string.replace('<h3 class="menu-tit01">정식-4,000원</h3>','')
     soup_string = soup_string.replace('<div class="day">토</div>','')
@@ -236,9 +251,10 @@ def meal():
         </div>
     """
 
-    url = "http://www.pusan.ac.kr/kor/CMS/MenuMgr/menuListOnWeekly.do?"
+    #url = "http://www.pusan.ac.kr/kor/CMS/MenuMgr/menuListOnWeekly.do?" 임시로 어제것 사용하기 위함
+    url = "http://www.pusan.ac.kr/kor/CMS/MenuMgr/menuListOnWeekly.do?mCode=#childTab_tmp"
+    #cont > div.menu-wr > div.is-wauto-box.menu-tbl-wr > table
     soup = BeautifulSoup(init(url), 'html.parser')
-    main3 = soup.select_one('#cont > div.menu-wr > div.is-wauto-box.menu-tbl-wr > table > tbody')
     soup_string = str(main3)
 
     result += soup_string
