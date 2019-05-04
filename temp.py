@@ -130,6 +130,7 @@ def DBget():
     curs.execute("select * from result")
     rows = curs.fetchall()
     result = front
+
     result += """
 	  <div class="container">
         <table class="table table-bordered">
@@ -225,39 +226,113 @@ def meal():
         ul{
             list-style:none;
         }
-        @media (min-width: 1px){
-            .container{
+        @media (max-width: 1000px){
+            .container#red{
                 width:1000px;
             }
         }
+        @media (max-width: 1000px){
+            .container#sub{
+                width:600px;
+            }
+        }
         </style>
-        <div class="container">
-        <h3>금정회관 2층</h3>
-       
     """
+
+
+    #url = "http://www.pusan.ac.kr/kor/CMS/MenuMgr/menuListOnWeekly.do?" 임시로 어제것 사용하기 위함
+    url = "http://www.pusan.ac.kr/kor/CMS/MenuMgr/menuListOnWeekly.do?mCode=#childTab_tmp"
+    result += """
+    <div class="container">
+    <h2 class="text-center">오늘의 행복</h2>
+    </div>
+    <div class="container" id="sub">
+        <h3>금정회관 2층</h3>
+        <table class="table table-striped">
+            <thead>
+                <tr>
+                    <th style="width: 20%"></th>
+                    <th style="width: 0%"></th>
+                    <th style="width: 40%" class="text-center">중식</th>
+                    <th style="width: 40%" class="text-center">석식</th>
+                </tr>
+            </thead>
+            <tbody>
+    """
+    soup = BeautifulSoup(init(url), 'html.parser')
+    main3 = soup.select_one('#cont > div.menu-wr > div.is-wauto-box.menu-tbl-wr > table > tbody > tr:nth-child(1)')
+    print(main3)
+    soup_string = str(main3)
+
+    soup_string = soup_string.replace('<h3 class="menu-tit03">정식-4,000원</h3>','')
+    soup_string = soup_string.replace('<h3 class="menu-tit03">정식-3,000원</h3>','')
+    soup_string = soup_string.replace('<h3 class="menu-tit03">일품1-3,000원</h3>','')
+
+    result += soup_string
+    result += "</tbody></table></div>"
+
+
+
+
+
+    #url = "http://www.pusan.ac.kr/kor/CMS/MenuMgr/menuListOnWeekly.do?" 임시로 어제것 사용하기 위함
+    url = "http://www.pusan.ac.kr/kor/CMS/MenuMgr/menuListOnWeekly.do?mCode=#childTab_tmp"
+    result += """
+    <div class="container" id="sub">
+        <h3>금정회관 1층</h3>
+        <table class="table table-striped">
+            <thead>
+                <tr>
+                    <th style="width: 20%"></th>
+                    <th style="width: 26%" class="text-center">조식</th>
+                    <th style="width: 26%" class="text-center">중식</th>
+                    <th style="width: 26%" class="text-center">석식</th>
+                </tr>
+            </thead>
+            <tbody>
+    """
+    soup = BeautifulSoup(init(url), 'html.parser')
+    main3 = soup.select_one('#cont > div.menu-wr > div.is-wauto-box.menu-tbl-wr > table > tbody > tr:nth-child(2)')
+    print(main3)
+    soup_string = str(main3)
+
+    soup_string = soup_string.replace('<h3 class="menu-tit03">정식-4,000원</h3>','')
+    soup_string = soup_string.replace('<h3 class="menu-tit03">정식-3,000원</h3>','<h4 class="text-center">정식</h4>')
+    soup_string = soup_string.replace('<h3 class="menu-tit03">일품1-3,000원</h3>','<h4 class="text-center">일품1</h4>')
+    soup_string = soup_string.replace('<h3 class="menu-tit03">일품2-3,000원</h3>','<h4 class="text-center">일품2</h4>')
+
+    result += soup_string
+    result += "</tbody></table></div>"
+
+
+
+
+
+    result +=        """
+     <div class="container" id="red">
+        <h3>금정회관 2층</h3>
+        """
+
     url = "http://www.pusan.ac.kr/kor/CMS/MenuMgr/menuListOnBuilding.do?"
     soup = BeautifulSoup(init(url), 'html.parser')
     main2 = soup.select_one('#cont > div.menu-wr > div.wauto-wrap > div.is-wauto-box > table.menu-tbl')
     soup_string = str(main2)
+    soup_string = soup_string.replace('조식','')
     soup_string = soup_string.replace('<th scope="col">','<th style="width: 19%">')
     soup_string = soup_string.replace('<th style="width: 19%">구분','<th style="width: 3%">')
     soup_string = soup_string.replace('<table class="menu-tbl type-day"', '<table class="table table-striped"')
     soup_string = soup_string.replace('<caption><span class="blind">캠퍼스별 식단메뉴에 대한 안내제공</span></caption>', '')
     soup_string = soup_string.replace('<h3 class="menu-tit01">정식-4,000원</h3>','')
-    soup_string = soup_string.replace('<div class="day">토</div>','')
-    soup_string = soup_string.replace('<div class="date">2019.05.04</div>','')
+    #soup_string = soup_string.replace('<div class="day">토</div>','')
+    #soup_string = soup_string.replace('<div class="date">2019.05.04</div>','')
     result += soup_string
     result += """
         </div>
     """
 
-    #url = "http://www.pusan.ac.kr/kor/CMS/MenuMgr/menuListOnWeekly.do?" 임시로 어제것 사용하기 위함
-    url = "http://www.pusan.ac.kr/kor/CMS/MenuMgr/menuListOnWeekly.do?mCode=#childTab_tmp"
-    #cont > div.menu-wr > div.is-wauto-box.menu-tbl-wr > table
-    soup = BeautifulSoup(init(url), 'html.parser')
-    soup_string = str(main3)
 
-    result += soup_string
+
+  
     result += back
     return result
 
