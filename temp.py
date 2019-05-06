@@ -1,7 +1,7 @@
 # -*- coding: utf-8 -*-
 
 #server, db
-from flask import Flask, render_template
+from flask import Flask, render_template, redirect, url_for, request
 from flask_bootstrap import Bootstrap
 import json
 import pymysql 
@@ -36,6 +36,15 @@ def init(url):
 
 # Make the WSGI interface available at the top level so wfastcgi can get it.
 wsgi_app = app.wsgi_app
+
+localhost = 'localhost:5555'
+dbhost = '192.168.1.127'
+
+#db는 연결해두고 커서만 끄자
+#conn = pymysql.connect(host=dbhost , user='bitelab_cl',
+#                       password='1111', db='bitelab', charset='utf8')
+
+
 front = """
 <!DOCTYPE html>
 <!-- saved from url=(0049)http://bootstrapk.com/examples/starter-template/# -->
@@ -97,14 +106,13 @@ active_header = """
 					<span class="icon-bar"></span>
 					<span class="icon-bar"></span>
 				</button>
-				<a class="navbar-brand"
-					href="http://localhost:5555">비이츠랩의 비밀공간</a>
+				<a class="navbar-brand"	href="http://""" + localhost + """">비이츠랩의 비밀공간</a>
 			</div>
 			<div id="navbar" class="collapse navbar-collapse">
 				<ul class="nav navbar-nav">
-					<li><a href="http://localhost:5555/">main</a></li>
-					<li><a href="http://localhost:5555/meal">식단</a></li>
-					<li><a href="http://localhost:5555/bootstrap">empty</a></li>
+					<li><a href="http://""" + localhost + """/">main</a></li>
+					<li><a href="http://""" + localhost + """/meal">식단</a></li>
+                    <li><a href="http://""" + localhost + """/goodwrite">좋은 글</a></li>
 					<li><a href="https://bitelab.pusan.ac.kr/ccslab/index.do">Bitelab</a></li>
 				</ul>
 			</div>
@@ -187,7 +195,7 @@ def pTEXT():
 @app.route('/')
 def main():
     result = front
-    result += active_header.replace('<li><a href="http://localhost:5555/">main</a></li>','<li class="active"><a href="http://localhost:5555/">main</a></li>')
+    result += active_header.replace('<li><a href="http://' + localhost + '/">main</a></li>','<li class="active"><a href="http://' + localhost + '/">main</a></li>')
     result += """
         <br><br><br><br>
         <div class="container">
@@ -224,7 +232,7 @@ def bootstrap():
 @app.route('/meal')
 def meal():
     result = front
-    result += active_header.replace('<li><a href="http://localhost:5555/meal">식단</a></li>','<li class="active"><a href="http://localhost:5555/meal">식단</a></li>')
+    result += active_header.replace('<li><a href="http://' + localhost + '/meal">식단</a></li>','<li class="active"><a href="http://' + localhost + '/meal">식단</a></li>')
     result += """
         <style>
         ul{
@@ -340,13 +348,106 @@ def meal():
     result += back
     return result
 
+@app.route('/gestbook', methods=['POST','GET'])
+def gestbook():
+#    conn = pymysql.connect(host='192.168.1.183', user='root', password='1111', db='bitelab', charset='utf8')
+#    curs = conn.cursor()
+#    curs.execute("select * from gestbook")
+#    rows = curs.fetchall()
+    conn = pymysql.connect(host=dbhost , user='bitelab_cl', password='1111', db='bitelab', charset='utf8')
+    curs = conn.cursor()
+    if request.method == 'POST':
+        writer = request.form['writer']
+        contents = request.form['contents']
+        print(writer)
+        print(type(writer))
+        print(contents)
+        print(type(contents))
+        
+        query = "INSERT INTO gestbook (name, text) VALUES ('" + writer + "', '" + contents + "')"
+        returnvalue= curs.execute(query)
+    result = front
+    result += active_header
+    result += """
+    <style>
+       
+        @media (max-width: 800px){
+            .container#sub{
+                width:800px;
+            }
+        }
+        </style>
+<div class="container">
+<table class="table table-bordered">
+    <thead>
+    </thead>
+    <tbody>
+        <form action="http://localhost:5555/gestbook" accept-charset="utf-8" method="post">
+            <tr>
+                <th>작성자: </th>
+                <td><input type="text" placeholder="작성자을 입력하세요. " name="writer" class="form-control" /></td>
+            </tr>
+            <tr>
+                <th>내용: </th>
+                <td><textarea cols="10" placeholder="내용을 입력하세요. " name="contents" class="form-control" ></textarea></td>
+            </tr>
+            <tr>
+                <td colspan="2">
+                    <input type="submit" class="btn btn-primary" value="등록" />
+                </td>
+            </tr>
+        </form>
+    </tbody>
+</table>
+</div>
 
-@app.route('/goodwrite/compile')
+<div class="container" id="sub">
+<table class="table table-striped">
+<thead>
+    <th style="width: 8%">번호</th>
+    <th style="width: 65%">내용</th>
+    <th style="width: 10%">작성자</th>
+    <th style="width: 17%">작성일자</th>
+</thead>
+<tbody>
+"""
+    curs.execute("select * from gestbook")
+    dbstring = curs.fetchall()
+    for x in dbstring:
+        result += "<tr>"
+        for y in x : 
+            result+="<td>"
+            result+=str(y)
+            result+="</td>"
+        result += "</tr>"
+
+    result += """
+ </tbody>
+    </div>
+    
+     """
+
+    result+=back
+    curs.close()
+
+    conn.close()
+    return result
+
+
+
+
+
+
+
+
+@app.route('/goodwrite')
 def goodwritecompile():
+
     filename = '컴파일과 빌드'
     fileroute = '/goodwrite/compile'
 
     result = front
+    result += active_header.replace('<li><a href="http://' + localhost + '/goodwrite">좋은 글</a></li>','<li class="active"><a href="http://' + localhost + '/goodwrite">좋은 글</a></li>')
     result += '<div class="container">'
     result += '<h3>' + filename + '</h3>' + '</div><br><br>'
     result += '<div class="container">'
@@ -354,7 +455,7 @@ def goodwritecompile():
     data = f.read()
      
     data = data.replace('compile_files','https://raw.githubusercontent.com/pkiop/mytimechecker/master' + fileroute + '_files')
-    data = data.replace('<a name="7616">','')
+    data = data.replace('<a name="7616" />','')
     data = data.replace('/static','../static')
     f.close()
     result += data
@@ -373,4 +474,4 @@ if __name__ == '__main__':
         PORT = int(os.environ.get('SERVER_PORT', '5555'))
     except ValueError:
         PORT = 5555
-    app.run(HOST, PORT)
+    app.run(HOST, PORT, threaded=True) # Threaded=True => multiple plot이 가능해짐 
