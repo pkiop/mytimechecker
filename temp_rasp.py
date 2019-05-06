@@ -38,7 +38,7 @@ def init(url):
 wsgi_app = app.wsgi_app
 
 localhost = '164.125.63.208:5555'
-dbhost = '164.125.63.208:3309'
+dbhost = '164.125.63.208'
 
 #db는 연결해두고 커서만 끄자
 #conn = pymysql.connect(host=dbhost , user='bitelab_cl',
@@ -113,6 +113,7 @@ active_header = """
 					<li><a href="http://""" + localhost + """/">main</a></li>
 					<li><a href="http://""" + localhost + """/meal">식단</a></li>
                     <li><a href="http://""" + localhost + """/goodwrite">좋은 글</a></li>
+                    <li><a herf="gttp://""" + localhost + """/gestbook">방명록</a></li>
 					<li><a href="https://bitelab.pusan.ac.kr/ccslab/index.do">Bitelab</a></li>
 				</ul>
 			</div>
@@ -367,7 +368,7 @@ def gestbook():
         query = "INSERT INTO gestbook (name, text) VALUES ('" + writer + "', '" + contents + "')"
         returnvalue= curs.execute(query)
     result = front
-    result += active_header
+    result += active_header.replace('<li><a href="http://' + localhost + '/gestbook">방명록</a></li>','<li class="active"><a href="http://' + localhost + '/gestbook">방명록</a></li>')
     result += """
     <style>
        
