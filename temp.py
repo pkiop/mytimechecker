@@ -25,7 +25,7 @@ Bootstrap(app)
 
 chrome_options = Options()
 chrome_options.add_argument("--headless")
-driver = webdriver.Chrome(chrome_options=chrome_options, executable_path="/usr/lib/chromium-browser/chromedriver")#"home/pi/Project/mytimechecker/crawler/chromedriver")
+driver = webdriver.Chrome(chrome_options=chrome_options, executable_path="chromedriver")#"home/pi/Project/mytimechecker/crawler/chromedriver")
 #driver = webdriver.Chrome("/home/pi/Project/mytimechecker/crawler/chromedriver")
 driver.set_page_load_timeout(10)
 
@@ -37,8 +37,8 @@ def init(url):
 # Make the WSGI interface available at the top level so wfastcgi can get it.
 wsgi_app = app.wsgi_app
 
-localhost = '164.125.63.208:5555'
-dbhost = '164.125.63.208:3309'
+localhost = 'localhost:5555'
+dbhost = '192.168.1.183'
 
 #db는 연결해두고 커서만 끄자
 #conn = pymysql.connect(host=dbhost , user='bitelab_cl',
