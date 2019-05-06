@@ -83,8 +83,10 @@ front = """
       <script src="https://oss.maxcdn.com/respond/1.4.2/respond.min.js"></script>
     <![endif]-->
 </head>
-<body>
+"""
 
+active_header = """
+<body>
 	<nav class="navbar navbar-inverse navbar-fixed-top">
 		<div class="container">
 			<div class="navbar-header">
@@ -100,7 +102,7 @@ front = """
 			</div>
 			<div id="navbar" class="collapse navbar-collapse">
 				<ul class="nav navbar-nav">
-					<li class="active"><a href="http://localhost:5555/">main</a></li>
+					<li><a href="http://localhost:5555/">main</a></li>
 					<li><a href="http://localhost:5555/meal">식단</a></li>
 					<li><a href="http://localhost:5555/bootstrap">empty</a></li>
 					<li><a href="https://bitelab.pusan.ac.kr/ccslab/index.do">Bitelab</a></li>
@@ -109,9 +111,6 @@ front = """
 			<!--/.nav-collapse -->
 		</div>
 	</nav>
-    
-   
-
 """
 
 back = """
@@ -187,8 +186,9 @@ def pTEXT():
 
 @app.route('/')
 def main():
-	result = front
-	result += """
+    result = front
+    result += active_header.replace('<li><a href="http://localhost:5555/">main</a></li>','<li class="active"><a href="http://localhost:5555/">main</a></li>')
+    result += """
         <br><br><br><br>
         <div class="container">
 	        <img width="300px" height="300px" src="https://raw.githubusercontent.com/pkiop/mytimechecker/master/image/godfather.jpg" class="img-responsive center-block img-circle"/>
@@ -199,8 +199,9 @@ def main():
 				<p class="lead"><br> </b>
 			</div>
 		</div>
-        
-<div id="carouselExampleSlidesOnly" class="carousel slide" data-ride="carousel">
+<footer class="footer">
+<div class="containter">
+<div id="carouselExampleSlidesOnly" class="carousel slide fixed-bottom" data-ride="carousel">
     <div class="carousel-inner">
         <div class="item active">
         <a href="https://ee.pusan.ac.kr"><img class="center-block" src="https://raw.githubusercontent.com/pkiop/mytimechecker/master/image/eelogo.png" alt="First slide"></a>
@@ -210,9 +211,11 @@ def main():
         </div>
     </div>
 </div>
+</div>
+</footer>
 	"""
-	result += back
-	return result
+    result += back
+    return result
 
 @app.route('/bootstrap')
 def bootstrap():
@@ -221,6 +224,7 @@ def bootstrap():
 @app.route('/meal')
 def meal():
     result = front
+    result += active_header.replace('<li><a href="http://localhost:5555/meal">식단</a></li>','<li class="active"><a href="http://localhost:5555/meal">식단</a></li>')
     result += """
         <style>
         ul{
@@ -244,7 +248,7 @@ def meal():
     url = "http://www.pusan.ac.kr/kor/CMS/MenuMgr/menuListOnWeekly.do?mCode=#childTab_tmp"
     result += """
     <div class="container">
-    <h2 class="text-center">오늘의 행복</h2>
+    <h2 class="text-center">\u2764\uFE0F오늘의 행복\u2764\uFE0F</h2>
     </div>
     <div class="container" id="sub">
         <h3>금정회관 2층</h3>
@@ -261,7 +265,6 @@ def meal():
     """
     soup = BeautifulSoup(init(url), 'html.parser')
     main3 = soup.select_one('#cont > div.menu-wr > div.is-wauto-box.menu-tbl-wr > table > tbody > tr:nth-child(1)')
-    print(main3)
     soup_string = str(main3)
 
     soup_string = soup_string.replace('<h3 class="menu-tit03">정식-4,000원</h3>','')
@@ -293,7 +296,6 @@ def meal():
     """
     soup = BeautifulSoup(init(url), 'html.parser')
     main3 = soup.select_one('#cont > div.menu-wr > div.is-wauto-box.menu-tbl-wr > table > tbody > tr:nth-child(2)')
-    print(main3)
     soup_string = str(main3)
 
     soup_string = soup_string.replace('<h3 class="menu-tit03">정식-4,000원</h3>','')
@@ -320,6 +322,7 @@ def meal():
     soup_string = soup_string.replace('조식','')
     soup_string = soup_string.replace('<th scope="col">','<th style="width: 19%">')
     soup_string = soup_string.replace('<th style="width: 19%">구분','<th style="width: 3%">')
+    soup_string = soup_string.replace('<th style="width: 19%">','<th style="width:19%" class="text-center">')
     soup_string = soup_string.replace('<table class="menu-tbl type-day"', '<table class="table table-striped"')
     soup_string = soup_string.replace('<caption><span class="blind">캠퍼스별 식단메뉴에 대한 안내제공</span></caption>', '')
     soup_string = soup_string.replace('<h3 class="menu-tit01">정식-4,000원</h3>','')
@@ -329,6 +332,7 @@ def meal():
     result += """
         </div>
     """
+    result
 
 
 
@@ -350,6 +354,8 @@ def goodwritecompile():
     data = f.read()
      
     data = data.replace('compile_files','https://raw.githubusercontent.com/pkiop/mytimechecker/master' + fileroute + '_files')
+    data = data.replace('<a name="7616">','')
+    data = data.replace('/static','../static')
     f.close()
     result += data
     result += '</div>'
