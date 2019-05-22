@@ -38,7 +38,7 @@ def init(url):
 wsgi_app = app.wsgi_app
 
 localhost = '164.125.63.208:5555'
-dbhost = '164.125.63.208'
+dbhost = '192.168.1.182'
 
 #db는 연결해두고 커서만 끄자
 #conn = pymysql.connect(host=dbhost , user='bitelab_cl',
@@ -355,7 +355,9 @@ def guestbook():
 #    curs = conn.cursor()
 #    curs.execute("select * from guestbook")
 #    rows = curs.fetchall()
+    print('do connect')
     conn = pymysql.connect(host=dbhost , user='bitelab_cl', password='1111', db='bitelab', charset='utf8')
+    print('connect success')
     curs = conn.cursor()
     if request.method == 'POST':
         writer = request.form['writer']
