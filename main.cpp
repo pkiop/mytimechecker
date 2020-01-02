@@ -6,10 +6,10 @@
 #include <string>
 #include <vector>
 #include <map>
-#include <set> // ÀÚ·á Á¤·ÄÇÏ±â À§ÇÔ
-#include <algorithm> // O¶û B Á¤·ÄÇÏ±â À§ÇÔ
-#include <direct.h> //Æú´õ ¸¸µé±â À§ÇÔ
-#include <windows.h> // Æú´õ ¸¸µé±â À§ÇÔ
+#include <set> // ìë£Œ ì •ë ¬í•˜ê¸° ìœ„í•¨
+#include <algorithm> // Oë‘ B ì •ë ¬í•˜ê¸° ìœ„í•¨
+#include <direct.h> //í´ë” ë§Œë“¤ê¸° ìœ„í•¨
+#include <windows.h> // í´ë” ë§Œë“¤ê¸° ìœ„í•¨
 
 using namespace std;
 
@@ -22,15 +22,15 @@ class mytime {
 	enum for_firstline {
 		lab_arrive, start_time, M_exercise
 	};
-	//°øºÎ ÇÑ °Íµé ¸®½ºÆ®
+	//ê³µë¶€ í•œ ê²ƒë“¤ ë¦¬ìŠ¤íŠ¸
 	vector < pair<pair<int, char>, pair<int, string> > > record; // index, color, time, contents
-	vector < pair<pair<int, int>, pair<int, char> > > for_table_data; // ½ÃÀÛ½Ã°£ÀÇ h,m °ú µÚÀÇ ½Ã°£ 
+	vector < pair<pair<int, int>, pair<int, char> > > for_table_data; // ì‹œì‘ì‹œê°„ì˜ h,m ê³¼ ë’¤ì˜ ì‹œê°„ 
 
 	//results
-	int O_time[4], B_time[4], X_time[4]; // Orange, Blue, Xtime (X timeÀº lab¿¡ ¾ø¾ú°Å³ª) 0 : ÃÑ½Ã°£ 1 : ¿ÀÀü 2 : ¿ÀÈÄ 3 : Àú³á
+	int O_time[4], B_time[4], X_time[4]; // Orange, Blue, Xtime (X timeì€ labì— ì—†ì—ˆê±°ë‚˜) 0 : ì´ì‹œê°„ 1 : ì˜¤ì „ 2 : ì˜¤í›„ 3 : ì €ë…
 	int todaypercent[4];
-	char graph_table[19][61]; // ¾ê°¡ contents_timeÀÇ ¸Ş¸ğ¸®°ø°£ Ä§¹üÇÏ´Â µíÇÑµ¥..
-	map<string, pair<int, char> > contents_time; // key·Î ÇÑ ÀÏ Àû°í °ªÀ¸·Î ½Ã°£°ú ±×°ÍÀÇ color
+	char graph_table[19][61]; // ì–˜ê°€ contents_timeì˜ ë©”ëª¨ë¦¬ê³µê°„ ì¹¨ë²”í•˜ëŠ” ë“¯í•œë°..
+	map<string, pair<int, char> > contents_time; // keyë¡œ í•œ ì¼ ì ê³  ê°’ìœ¼ë¡œ ì‹œê°„ê³¼ ê·¸ê²ƒì˜ color
 
 public:
 	string ret_todaypercent() {
@@ -39,12 +39,12 @@ public:
 	string ret_sleeptime() {
 		return (to_string(sleep_h) + '.' + to_string(sleep_m));
 	}
-	//debugging ¿ë. Áö¿öµµ ´ï
+	//debugging ìš©. ì§€ì›Œë„ ëŒ
 	void contents_time_size_print() {
 		cout << "contents_time.size : " << contents_time.size() << endl;
 	}
-	// µ¥ÀÌÅÍ ÀÔ·Â ºÎºĞ 
-	//ÀúÀå¸¸ ÇØµÎ°í ÃßÈÄ¿¡ »ç¿ëÇÏ·Á°í. ÇöÀç´Â ¾îµğ¼­ »ç¿ëÇÏ´ÂÁö ¸ğ¸£°Ú.
+	// ë°ì´í„° ì…ë ¥ ë¶€ë¶„ 
+	//ì €ì¥ë§Œ í•´ë‘ê³  ì¶”í›„ì— ì‚¬ìš©í•˜ë ¤ê³ . í˜„ì¬ëŠ” ì–´ë””ì„œ ì‚¬ìš©í•˜ëŠ”ì§€ ëª¨ë¥´ê² .
 	void lab_arrive_func(int h, int m) {
 		lab_h = h;
 		lab_m = m;
@@ -53,7 +53,7 @@ public:
 		st_h = h;
 		st_m = m;
 	}
-	//ÀúÀå¸¸ ÇØµÎ°í ÃßÈÄ¿¡ »ç¿ëÇÏ·Á°í. ÇöÀç´Â ¾îµğ¼­ »ç¿ëÇÏ´ÂÁö ¸ğ¸£°Ú.
+	//ì €ì¥ë§Œ í•´ë‘ê³  ì¶”í›„ì— ì‚¬ìš©í•˜ë ¤ê³ . í˜„ì¬ëŠ” ì–´ë””ì„œ ì‚¬ìš©í•˜ëŠ”ì§€ ëª¨ë¥´ê² .
 	void M_exercise_func(vector<char>& char_vec) {
 		string s;
 		for (int i = 0; i < char_vec.size(); ++i) {
@@ -64,9 +64,9 @@ public:
 	void push_record(int index, char color, int time, string& contents) {
 		record.push_back({ {index,color},{time,contents} });
 	}
-	//µ¥ÀÌÅÍ ÀÔ·ÂºÎºĞ ³¡
+	//ë°ì´í„° ì…ë ¥ë¶€ë¶„ ë
 
-	//text ÀÔ·Â¹ŞÀº µ¥ÀÌÅÍ Ã³¸®ºÎºĞ
+	//text ì…ë ¥ë°›ì€ ë°ì´í„° ì²˜ë¦¬ë¶€ë¶„
 	void sleeping_time_cal(string& s) {
 		int h, m;
 		for (int i = 0; i < s.size(); ++i) {
@@ -77,10 +77,12 @@ public:
 			m = int(s[21] - '0') * 10 + int(s[22] - '0');
 			h += (23 - (int(s[12] - '0') * 10 + int(s[13] - '0')));
 			m += (60 - (int(s[18] - '0') * 10 + int(s[19] - '0')));
+			m += 6; // 23ì‹œxxë¶„ì´ ì‹œì‘ì‹œê°„ì´ë©´ ìˆ˜ë©´ ê²°ê³¼ 6ë¶„ bias ìƒê¸°ëŠ” ë²„ê·¸ ë•œë¹µ
 			while (m >= 60) {
 				m -= 60;
 				h++;
 			}
+			
 		}
 		else {
 			h = (int(s[18] - '0') * 10 + int(s[19] - '0')) - (int(s[12] - '0') * 10 + int(s[13] - '0'));
@@ -95,14 +97,14 @@ public:
 		mytime::sleep_m = m;
 	};
 
-	void first_line_check(string& s, int cnt) { // ·¦½ÇµµÂø, ½ÃÀÛ½Ã°£, ¾ÆÄ§¿îµ¿ Ã¼Å©¿ë
+	void first_line_check(string& s, int cnt) { // ë©ì‹¤ë„ì°©, ì‹œì‘ì‹œê°„, ì•„ì¹¨ìš´ë™ ì²´í¬ìš©
 		switch (cnt) {
 		case lab_arrive:
-			//12ºÎÅÍ ½ÃÀÛÇÏ´Â ÀÌÀ¯. ÇÑ±ÛÀ» char·Î ¹Ù²Ù¸é ?°¡ µÇ´Âµ¥ ÇÑ±Û ÇÑ±ÛÀÚ´ç ?? ·Î µÇ¾î¼­ 2Ä­¾¿ Â÷ÁöÇÏ´Â °É·Î °è»ê 
-			mytime::lab_arrive_func((int(s[12] - '0') * 10 + int(s[13] - '0')), int(s[15] - '0') * 10 + int(s[16] - '0')); // ¾ÕºÎºĞ »©°í ½Ã°£¸¸ ¹Ù²ã¼­ ³Ö±â
+			//12ë¶€í„° ì‹œì‘í•˜ëŠ” ì´ìœ . í•œê¸€ì„ charë¡œ ë°”ê¾¸ë©´ ?ê°€ ë˜ëŠ”ë° í•œê¸€ í•œê¸€ìë‹¹ ?? ë¡œ ë˜ì–´ì„œ 2ì¹¸ì”© ì°¨ì§€í•˜ëŠ” ê±¸ë¡œ ê³„ì‚° 
+			mytime::lab_arrive_func((int(s[12] - '0') * 10 + int(s[13] - '0')), int(s[15] - '0') * 10 + int(s[16] - '0')); // ì•ë¶€ë¶„ ë¹¼ê³  ì‹œê°„ë§Œ ë°”ê¿”ì„œ ë„£ê¸°
 			break;
 		case start_time:
-			mytime::start_time_func((int(s[12] - '0') * 10 + int(s[13] - '0')), int(s[15] - '0') * 10 + int(s[16] - '0')); // ¾ÕºÎºĞ »©°í ½Ã°£¸¸ ¹Ù²ã¼­ ³Ö±â
+			mytime::start_time_func((int(s[12] - '0') * 10 + int(s[13] - '0')), int(s[15] - '0') * 10 + int(s[16] - '0')); // ì•ë¶€ë¶„ ë¹¼ê³  ì‹œê°„ë§Œ ë°”ê¿”ì„œ ë„£ê¸°
 			break;
 		case M_exercise:
 			vector<char> input;
@@ -132,10 +134,10 @@ public:
 		push_record(index, s[0], push_m, contents);
 		for_table_data.push_back({ {start_h, start_m}, {push_m, s[0]} });
 	}
-	//ÀÏ´Ü ½Ã°£¸¸ ÀÔ·Â¹Ş°í ¸¶Áö¸· ¹®ÀÚ´Â recode_sort_and_alphabet_chance¿¡¼­ record Á¤·ÄµÈ ´ÙÀ½ for_data_table_cal µ¹¸®¸é 
-	//½Ã°£ ¸¹ÀÌ ¾´ ¼ø¼­´ë·Î A~Z, a~z·Î Á¤·ÄµÇ¾î Ãâ·ÂµÈ´Ù.
+	//ì¼ë‹¨ ì‹œê°„ë§Œ ì…ë ¥ë°›ê³  ë§ˆì§€ë§‰ ë¬¸ìëŠ” recode_sort_and_alphabet_chanceì—ì„œ record ì •ë ¬ëœ ë‹¤ìŒ for_data_table_cal ëŒë¦¬ë©´ 
+	//ì‹œê°„ ë§ì´ ì“´ ìˆœì„œëŒ€ë¡œ A~Z, a~zë¡œ ì •ë ¬ë˜ì–´ ì¶œë ¥ëœë‹¤.
 
-	void recode_sort_and_alphabet_change() { //ÀÔ·Â¹ŞÀº °Í¿¡ µû¶ó ºĞÀÌ °¡Àå ³ôÀº ¼ø¼­´ë·Î ABCD, abcd·Î ºĞ·ùÇÒ °Í 
+	void recode_sort_and_alphabet_change() { //ì…ë ¥ë°›ì€ ê²ƒì— ë”°ë¼ ë¶„ì´ ê°€ì¥ ë†’ì€ ìˆœì„œëŒ€ë¡œ ABCD, abcdë¡œ ë¶„ë¥˜í•  ê²ƒ 
 		vector<pair<int, string>> for_O, for_B;
 		for (auto x : contents_time) {
 
@@ -146,12 +148,12 @@ public:
 				for_O.push_back({ x.second.first,x.first });
 			}
 		}
-		sort(for_O.begin(), for_O.end(), greater<pair<int, string>>()); //È°¿ëÇÑ ½Ã°£, È°¿ë¸øÇÑ½Ã°£ sort
+		sort(for_O.begin(), for_O.end(), greater<pair<int, string>>()); //í™œìš©í•œ ì‹œê°„, í™œìš©ëª»í•œì‹œê°„ sort
 		sort(for_B.begin(), for_B.end(), greater<pair<int, string>>());
 
 		char Alpha = 'A';
 		for (auto x : for_O) {
-			for (int i = 0; i < record.size(); ++i) { //¿©±â auto·Î ÇÏ¸é  °ª ¾È¹Ù²ï´Ù. 
+			for (int i = 0; i < record.size(); ++i) { //ì—¬ê¸° autoë¡œ í•˜ë©´  ê°’ ì•ˆë°”ë€ë‹¤. 
 				if (record[i].second.second == x.second) {
 					record[i].first.second = Alpha;
 				}
@@ -171,14 +173,14 @@ public:
 
 	void for_table_data_cal() {
 		for (int i = 0; i < record.size(); ++i) {
-			if (for_table_data[i].second.second != 'Z' && for_table_data[i].second.second != 'z') // Z³²°Ü³õ´Â ÀÌÀ¯´Â ¼ö¾÷Àº µû·ÎÃ³¸®ÇÏ±âÀ§ÇÔ
+			if (for_table_data[i].second.second != 'Z' && for_table_data[i].second.second != 'z') // Zë‚¨ê²¨ë†“ëŠ” ì´ìœ ëŠ” ìˆ˜ì—…ì€ ë”°ë¡œì²˜ë¦¬í•˜ê¸°ìœ„í•¨
 				for_table_data[i].second.second = record[i].first.second;
 		}
 	}
-	//text ÀÔ·Â¹ŞÀº µ¥ÀÌÅÍ Ã³¸®ºÎºĞ ³¡
+	//text ì…ë ¥ë°›ì€ ë°ì´í„° ì²˜ë¦¬ë¶€ë¶„ ë
 
 
-	//µ¥ÀÌÅÍ Ã³¸®Çß´ø µ¥ÀÌÅÍ·Î °è»êÇÏ°í Åë°è³»´Â ºÎºĞ
+	//ë°ì´í„° ì²˜ë¦¬í–ˆë˜ ë°ì´í„°ë¡œ ê³„ì‚°í•˜ê³  í†µê³„ë‚´ëŠ” ë¶€ë¶„
 	void color_time_cal() {
 		for (int i = 0; i < 4; ++i) {
 			O_time[i] = 0;
@@ -200,7 +202,7 @@ public:
 			B_time[0] += B_time[i];
 		}
 
-		X_time[0] = 60 * 12 - O_time[0] - B_time[0]; // XÃÑ Å¸ÀÓÀº 12½Ã°£ * 60¿¡ O¶û B »«°Í
+		X_time[0] = 60 * 12 - O_time[0] - B_time[0]; // Xì´ íƒ€ì„ì€ 12ì‹œê°„ * 60ì— Oë‘ B ëº€ê²ƒ
 		for (int i = 1; i < 4; ++i) {
 			X_time[i] = 240 - O_time[i] - B_time[i];
 		}
@@ -209,13 +211,13 @@ public:
 	void contents_time_cal() {
 		for (auto x : record) {
 			contents_time[x.second.second].first += x.second.first;
-			contents_time[x.second.second].second = x.first.second; // O¶û B ±¸ºĞÇÏ°ÔÇØ¼­ Ãâ·ÂÇÒ ¶§ µû·Î ³ª¿À°Ô ÇÏ·Á°í 
+			contents_time[x.second.second].second = x.first.second; // Oë‘ B êµ¬ë¶„í•˜ê²Œí•´ì„œ ì¶œë ¥í•  ë•Œ ë”°ë¡œ ë‚˜ì˜¤ê²Œ í•˜ë ¤ê³  
 
 		}
 	}
-	//µ¥ÀÌÅÍ Ã³¸®Çß´ø µ¥ÀÌÅÍ·Î °è»êÇÏ°í Åë°è³»´Â ºÎºĞ ³¡
+	//ë°ì´í„° ì²˜ë¦¬í–ˆë˜ ë°ì´í„°ë¡œ ê³„ì‚°í•˜ê³  í†µê³„ë‚´ëŠ” ë¶€ë¶„ ë
 
-	//table Ã³¸® ºÎºĞ
+	//table ì²˜ë¦¬ ë¶€ë¶„
 	void table_cal() {
 		for (int i = 1; i < 61; ++i) {
 			graph_table[0][i] = char((i - 1) % 10 + '0');
@@ -225,24 +227,25 @@ public:
 			graph_table[i][0] = char(i % 10 + '0');
 		}
 
-		for (auto x : for_table_data) { // ½ÃÀÛ½Ã°£ÀÇ h¿Í m, ±× ½Ã°£
+		for (auto x : for_table_data) { // ì‹œì‘ì‹œê°„ì˜ hì™€ m, ê·¸ ì‹œê°„
 			int row = x.first.first;
 			int col = x.first.second;
 			int cnt = x.second.first;
 			char summary_char = x.second.second;
-			//7½ÃºÎÅÍ ½ÃÀÛÇÏ±â À§ÇØ¼­. ¿¹Àü¿¡ 17½Ã´Â ÇÑÄ­ ¶¯°Ü¼­ ¹¹ ÀÌ·±½ÄÀ¸·Î ÇÏ±â À§ÇØ row °ªÀÌ 8º¸´Ù ÄÇÀ½ 
+			//7ì‹œë¶€í„° ì‹œì‘í•˜ê¸° ìœ„í•´ì„œ. ì˜ˆì „ì— 17ì‹œëŠ” í•œì¹¸ ë•¡ê²¨ì„œ ë­ ì´ëŸ°ì‹ìœ¼ë¡œ í•˜ê¸° ìœ„í•´ row ê°’ì´ 8ë³´ë‹¤ ì»¸ìŒ 
+			int row_bias = 5; // 7ì‹œë¶€í„° ì‹œì‘ì´ë˜ê±¸ 6ì‹œë¶€í„° ì‹œì‘ìœ¼ë¡œ í•˜ë‹ˆê¹Œ ìœ„ ìˆ«ìë¥¼ ì¹¨ë²”. ê·¸ê±¸ ì¡°ì ˆí•˜ëŠ” bias
 			if (row <= 12) {
-				row -= 6;
+				row -= row_bias;
 			}
 			else if (row <= 17) {
-				row -= 6;
+				row -= row_bias;
 			}
 			else if (row <= 24) {
-				row -= 6;
+				row -= row_bias;
 			}
 
 			bool OorB;
-			if (summary_char >= 'a') { //´ë¹®ÀÚÀÌ¸é È°¿ë½Ã°£ ¼Ò¹®ÀÚÀÌ¸é È°¿ë¸øÇÑ°Í 
+			if (summary_char >= 'a') { //ëŒ€ë¬¸ìì´ë©´ í™œìš©ì‹œê°„ ì†Œë¬¸ìì´ë©´ í™œìš©ëª»í•œê²ƒ 
 				OorB = false;
 			}
 			else {
@@ -289,30 +292,30 @@ public:
 		}
 	}
 
-	void todaypercent_cal() { // ÇÏ·ç ¿©´ü½Ã°£ ÁıÁßÀº 100%
+	void todaypercent_cal() { // í•˜ë£¨ ì—¬ëŸì‹œê°„ ì§‘ì¤‘ì€ 100%
 		int resttime = 30;
-		todaypercent[0] = (O_time[0] * 100) / (60 * 8) ; // 8½Ã°£
+		todaypercent[0] = (O_time[0] * 100) / (60 * 8); // 8ì‹œê°„
 		/*for (int i = 1; i < 4; ++i) {
 			todaypercent[i] = (O_time[i] * 100) / (240 - resttime);
 		}*/
 	}
-	//table Ã³¸® ºÎºĞ ³¡ 
+	//table ì²˜ë¦¬ ë¶€ë¶„ ë 
 
 	template<typename T>
 	void print_data(T& os, string filename) {
-		os << "\n\n    --------------------------- 20" << filename.substr(0, 2) << "³â " << filename.substr(2, 2) << "¿ù " << filename.substr(4, 2) << "ÀÏ" << " -------------------------" << endl;
-		/*os << "\t\t\t\tµµÂø ½Ã°£ : " << lab_h << ':' << lab_m << endl;
-		os << "\t\t\t\t½ÃÀÛ ½Ã°£ : " << st_h << ':' << st_m << endl;
-		os << "\t\t\t\t¾ÆÄ§ ¿îµ¿ : " << morning_exercise << endl;*/
+		os << "\n\n    --------------------------- 20" << filename.substr(0, 2) << "ë…„ " << filename.substr(2, 2) << "ì›” " << filename.substr(4, 2) << "ì¼" << " -------------------------" << endl;
+		/*os << "\t\t\t\të„ì°© ì‹œê°„ : " << lab_h << ':' << lab_m << endl;
+		os << "\t\t\t\tì‹œì‘ ì‹œê°„ : " << st_h << ':' << st_m << endl;
+		os << "\t\t\t\tì•„ì¹¨ ìš´ë™ : " << morning_exercise << endl;*/
 
 		/*for (auto x : record) {
 		   os << x.first.first << ' ' << x.first.second << ' ' << x.second.first << ' ' << x.second.second << endl;
 		}*/
-		os << "\n    --------------------------- [   ±â·ÏÇÑ Ç¥   ] ------------------------" << endl;
-		int hour = 6;
-		for (int i = 0; i < 18; ++i) {
+		os << "\n    --------------------------- [   ê¸°ë¡í•œ í‘œ   ] ------------------------" << endl;
+		int hour = 5; // table ì‹œì‘ ì¡°ì ˆ
+		for (int i = 0; i < 19; ++i) {
 			os << "    ";
-			if (hour < 10 && hour != 6) {
+			if (hour < 10 && hour != 5) {
 				os << '0';
 			}
 			//if (hour == 12) {
@@ -321,7 +324,7 @@ public:
 			//if (hour == 17) {
 			//   hour += 2;
 			//}
-			if (hour == 6) {
+			if (hour == 5) {
 				os << "  ";
 				hour++;
 			}
@@ -347,10 +350,10 @@ public:
 				for_O.push_back({ x.second.first,x.first });
 			}
 		}
-		sort(for_O.begin(), for_O.end(), greater<pair<int, string>>()); //È°¿ëÇÑ ½Ã°£, È°¿ë¸øÇÑ½Ã°£ sort
+		sort(for_O.begin(), for_O.end(), greater<pair<int, string>>()); //í™œìš©í•œ ì‹œê°„, í™œìš©ëª»í•œì‹œê°„ sort
 		sort(for_B.begin(), for_B.end(), greater<pair<int, string>>());
 
-		os << "\n    --------------------------   [È°¿ëÇÑ ½Ã°£]   --------------------------" << endl;
+		os << "\n    --------------------------   [í™œìš©í•œ ì‹œê°„]   --------------------------" << endl;
 		for (auto x : for_O) {
 			os << "\t\t\t";
 			int len = x.second.size();
@@ -361,12 +364,12 @@ public:
 				}
 			}
 			os << x.second;
-			for (int i = 0; i < 20 - len; ++i) { // ±ÛÀÚ¼ö 20 ÀÌ³»ÀÌ¸é °ø¹é ¸¸µé¾îÁØ´Ù.
+			for (int i = 0; i < 20 - len; ++i) { // ê¸€ììˆ˜ 20 ì´ë‚´ì´ë©´ ê³µë°± ë§Œë“¤ì–´ì¤€ë‹¤.
 				os << ' ';
 			}
 			os << "\t| " << x.first << endl;
 		}
-		os << "    ---------------------------  [È°¿ë¸øÇÑ ½Ã°£]  -------------------------" << endl;
+		os << "    ---------------------------  [í™œìš©ëª»í•œ ì‹œê°„]  -------------------------" << endl;
 		for (auto x : for_B) {
 			os << "\t\t\t";
 			for (auto y : record) {
@@ -377,60 +380,60 @@ public:
 			}
 			int len = x.second.size();
 			os << x.second;
-			for (int i = 0; i < 20 - len; ++i) { // ±ÛÀÚ¼ö 20 ÀÌ³»ÀÌ¸é °ø¹é ¸¸µé¾îÁØ´Ù.
+			for (int i = 0; i < 20 - len; ++i) { // ê¸€ììˆ˜ 20 ì´ë‚´ì´ë©´ ê³µë°± ë§Œë“¤ì–´ì¤€ë‹¤.
 				os << ' ';
 			}
-			os << "\t| " << x.first << endl; // ¸¶Áö¸· tabÀ¸·Î ÀÚÀßÇÑ ÀÚ¸® Â÷ÀÌ ³ª´Â°Å Ã¤¿öÁØ´Ù. 
+			os << "\t| " << x.first << endl; // ë§ˆì§€ë§‰ tabìœ¼ë¡œ ìì˜í•œ ìë¦¬ ì°¨ì´ ë‚˜ëŠ”ê±° ì±„ì›Œì¤€ë‹¤. 
 		}
 
 		for (int i = 0; i < 1; ++i) {
 			if (i == 0) {
-				os << "\n    --------------------------- [  ÃÑ È°¿ëÇÑ ½Ã°£] ------------------------" << endl;
+				os << "\n    --------------------------- [  ì´ í™œìš©í•œ ì‹œê°„] ------------------------" << endl;
 			}
 			else {
 				os << "    --------------------------- [";
 				switch (i) {
 
 				case 1:
-					os << "¿ÀÀü";
+					os << "ì˜¤ì „";
 					break;
 				case 2:
-					os << "¿ÀÈÄ";
+					os << "ì˜¤í›„";
 					break;
 				case 3:
-					os << "Àú³á";
+					os << "ì €ë…";
 					break;
 				default:
-					os << "ÃÑÈ°¿ë½Ã°£ ¿À·ù";
+					os << "ì´í™œìš©ì‹œê°„ ì˜¤ë¥˜";
 				}
 
-				os << " È°¿ëÇÑ ½Ã°£] -------------------------" << endl;
+				os << " í™œìš©í•œ ì‹œê°„] -------------------------" << endl;
 			}
 			os << "         O : " << O_time[i] << " |    B : " << B_time[i] << "\t | X : " << (X_time[i] >= 0 ? X_time[i] : 0) << endl;
 		}
 
-		os << "\n    --------------------------- [¿À´ÃÀÇ ÆÛ¼¾Æ®] ---------------------------" << endl;
+		os << "\n    --------------------------- [ì˜¤ëŠ˜ì˜ í¼ì„¼íŠ¸] ---------------------------" << endl;
 		for (int i = 0; i < 1; ++i) {
 			switch (i) {
 			case 0:
-				os << "\t\t\t\t ÇÏ·ç : ";
+				os << "\t\t\t\t í•˜ë£¨ : ";
 				break;
 			case 1:
-				os << "\t\t\t\t ¿ÀÀü : ";
+				os << "\t\t\t\t ì˜¤ì „ : ";
 				break;
 			case 2:
-				os << "\t\t\t\t ¿ÀÈÄ : ";
+				os << "\t\t\t\t ì˜¤í›„ : ";
 				break;
 			case 3:
-				os << "\t\t\t\t Àú³á : ";
+				os << "\t\t\t\t ì €ë… : ";
 				break;
 			default:
-				os << "ÆÛ¼¾Æ®¿¡·¯" << endl;
+				os << "í¼ì„¼íŠ¸ì—ëŸ¬" << endl;
 				break;
 			}
 			os << todaypercent[i] << "%\n";
 		}
-		os << "ÀÜ ½Ã°£ : " << sleep_h << ':' << sleep_m;
+		os << "ì” ì‹œê°„ : " << sleep_h << ':' << sleep_m;
 	}
 };
 
@@ -439,7 +442,7 @@ int main()
 
 	mytime go;
 	string filePath = "time.txt";
-	cout << "³âµµ ³¡ µÎÀÚ¸®, ¿ù, ÀÏ À» ÀÔ·ÂÇÏ¼¼¿ä (ex 180123) : ";
+	cout << "ë…„ë„ ë ë‘ìë¦¬, ì›”, ì¼ ì„ ì…ë ¥í•˜ì„¸ìš” (ex 180123) : ";
 	string filename, filename_out;
 	cin >> filename;
 	filename_out = filename;
@@ -447,10 +450,10 @@ int main()
 	string dirname = filename.substr(0, 4);
 	ofstream writeFile(filename.data());
 
-	//¿äÀÏ ±¸ÇÏ±â
+	//ìš”ì¼ êµ¬í•˜ê¸°
 	int monthday[] = { 31,29,31,30,31,30,31,31,30,31,30,31 };
 	string week[] = { "Mo","Tu", "We", "Th", "Fr", "Sa", "Su" };
-	int date = stoi(filename); // file ÀÌ¸§Àº 20xxxx
+	int date = stoi(filename); // file ì´ë¦„ì€ 20xxxx
 	int whatweek;
 	string yoil_st;
 	if (date / 10000 == 20) {
@@ -462,12 +465,12 @@ int main()
 		}
 		yoil_st = week[(day) % 7];
 
-		//±× ´ŞÀÇ Ã¹³¯ÀÇ ¿äÀÏ ¾Ë±â
+		//ê·¸ ë‹¬ì˜ ì²«ë‚ ì˜ ìš”ì¼ ì•Œê¸°
 		int day2 = 1;
 		for (int i = 0; i < month - 1; ++i) {
 			day2 += monthday[i];
 		}
-		int yoil = day % 7; // Ã¹³¯ÀÇ ¿äÀÏ
+		int yoil = day % 7; // ì²«ë‚ ì˜ ìš”ì¼
 		if ((whatweekday % 7) < yoil) {
 			whatweek = whatweekday / 7 + 1;
 		}
@@ -477,11 +480,11 @@ int main()
 
 	}
 	else {
-		cerr << "¾ÆÁ÷ 20³âµµ¸¸" << endl;
+		cerr << "ì•„ì§ 20ë…„ë„ë§Œ" << endl;
 		return -1;
 	}
 
-	int for_first_line_cnt = 0; // ·¦½Ç½Ã°£, ½ÃÀÛ½Ã°£, ¾ÆÄ§½Ã°£ Ã¼Å©¿ë
+	int for_first_line_cnt = 0; // ë©ì‹¤ì‹œê°„, ì‹œì‘ì‹œê°„, ì•„ì¹¨ì‹œê°„ ì²´í¬ìš©
 	int time_index = 0;
 	ifstream openFile(filePath.data());
 	string today_exercise;
@@ -490,7 +493,7 @@ int main()
 	string toDBTEXT = "";
 	if (openFile.is_open()) {
 		string line;
-		writeFile << "\t\t\t\t---- µ¥ÀÌÅÍ ----\n";
+		writeFile << "\t\t\t\t---- ë°ì´í„° ----\n";
 		while (getline(openFile, line) && line != "end") {
 			toDBTEXT += line;
 			/*if (line[0] == '-') {
@@ -499,7 +502,7 @@ int main()
 				continue;
 			}*/
 
-			//Ã¹ÁÙ Ã³¸®¿ë
+			//ì²«ì¤„ ì²˜ë¦¬ìš©
 			if (for_first_line_cnt == 0) {
 				go.sleeping_time_cal(line);
 			}
@@ -511,13 +514,13 @@ int main()
 				today_exercise = line;
 			}*/
 			else {
-				//¸Ç ¾Õ¿¡ ÀÔ·ÂµÇ´Â ¹®ÀÚ´Â ÈÄ¿¡ ¼ø¼­´ë·Î ´Ù¸¥ ¾ËÆÄºªÀ¸·Î º¯°æµÈ´Ù. 
-				//½Ã°£Ç¥·Î ³ª¸ÓÁö´Â ´Ù º¸³»±â
+				//ë§¨ ì•ì— ì…ë ¥ë˜ëŠ” ë¬¸ìëŠ” í›„ì— ìˆœì„œëŒ€ë¡œ ë‹¤ë¥¸ ì•ŒíŒŒë²³ìœ¼ë¡œ ë³€ê²½ëœë‹¤. 
+				//ì‹œê°„í‘œë¡œ ë‚˜ë¨¸ì§€ëŠ” ë‹¤ ë³´ë‚´ê¸°
 				go.time_classification(time_index, line);
 				writeFile << "\t\t\t       " << line << '\n';
 			}
 
-			for_first_line_cnt++; // first_line À§ÇÑ cnt
+			for_first_line_cnt++; // first_line ìœ„í•œ cnt
 		}
 		openFile.close();
 	}
